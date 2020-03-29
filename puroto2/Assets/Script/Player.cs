@@ -9,11 +9,13 @@ public class Player : MonoBehaviour
     public float moveSpeed;
     public float jumpForce;
     public int count;
+    public float maxSpeed;
 
     public Vector3 rbVelo;
 
     public bool isJump;
     public bool playerMode=true;
+    public bool isDown = false;
 
     public GameObject normal;
     public GameObject shadow;
@@ -31,13 +33,21 @@ public class Player : MonoBehaviour
         rbVelo = rd.velocity;
 
         rd.AddForce(new Vector3(moveSpeed * Time.deltaTime, 0, 0), ForceMode.Force);
+        if(rd.velocity.magnitude>maxSpeed)
+        {
+            rd.AddForce(new Vector3(maxSpeed, 0, 0));
+        }
         if(Input.GetKeyDown(KeyCode.Space)&&count<2)
         {
             rd.AddForce(transform.up * jumpForce, ForceMode.Impulse);
             count++;
             
         }
-       
+
+        if(this.gameObject.transform.position.y<-16)
+        {
+            isDown = true;
+        }
 
         if(Input.GetKeyDown(KeyCode.Z))
         {
@@ -75,5 +85,19 @@ public class Player : MonoBehaviour
             count = 0;
         }
     }
+
+    public void ContinuePlayer()
+    {
+        isDown = false;
+        playerMode = true;
+    }
     
+    public bool IsDown()
+    {
+        if(isDown)
+        {
+            return true;
+        }
+        return false;
+    }
 }
