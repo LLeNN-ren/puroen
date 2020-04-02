@@ -32,11 +32,8 @@ public class Player : MonoBehaviour
     {
         rbVelo = rd.velocity;
 
-        rd.AddForce(new Vector3(moveSpeed * Time.deltaTime, 0, 0), ForceMode.Force);
-        if(rd.velocity.magnitude>maxSpeed)
-        {
-            rd.AddForce(new Vector3(maxSpeed, 0, 0));
-        }
+        rd.AddForce(new Vector3(moveSpeed, 0, 0), ForceMode.Force);
+        
         if(Input.GetKeyDown(KeyCode.Space)&&count<2)
         {
             rd.AddForce(transform.up * jumpForce, ForceMode.Impulse);
@@ -76,6 +73,7 @@ public class Player : MonoBehaviour
         {
             isJump = false;
         }
+       
     }
     private void OnCollisionExit(Collision coll)
     {
@@ -83,6 +81,15 @@ public class Player : MonoBehaviour
         {
             isJump = true;
             count = 0;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "CheckPoint")
+        {
+            GameManager.instance.continueNum = 1;
+            GameManager.instance.coinNum += 10;
         }
     }
 

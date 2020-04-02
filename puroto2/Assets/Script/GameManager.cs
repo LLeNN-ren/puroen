@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 
     public int stageNum=0;
     public int continueNum=0;
+    public int coinNum = 0;
 
     private void Awake()
     {
