@@ -4,23 +4,27 @@ using UnityEngine;
 
 public class StageManager : MonoBehaviour
 {
-    public GameObject playerPrefab;
-    public Transform checkPoint;
-    private GameObject playerObject;
-    private Player player;
+    public GameObject playerObj;
+    public GameObject[] continuePoint;
 
-    void Awake()
-    {
-        playerObject = Instantiate(playerPrefab, checkPoint.position, Quaternion.identity) as GameObject;
-        player = playerObject.GetComponent<Player>();
-    }
+    private Player player;
+   
     // Start is called before the first frame update
     void Start()
     {
-        
+        if(playerObj!=null&&continuePoint!=null&&continuePoint.Length>0)
+        {
+            playerObj.transform.position = continuePoint[0].transform.position;
+            player = playerObj.GetComponent<Player>();
+        }
     }
 
-    public void toContinue()
+    void Update()
     {
+        if(player.IsDown())
+        {
+            playerObj.transform.position = continuePoint[GameManager.instance.continueNum].transform.position;
+            player.ContinuePlayer();
+        }
     }
 }
