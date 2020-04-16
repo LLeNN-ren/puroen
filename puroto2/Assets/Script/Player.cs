@@ -21,6 +21,9 @@ public class Player : MonoBehaviour
     public GameObject shadow;
 
     public GameObject kage;
+
+    public int stageCoin;
+    public UnityEngine.UI.Text textcoin;
     // Start is called before the first frame update
     void Start()
     {
@@ -91,6 +94,21 @@ public class Player : MonoBehaviour
             GameManager.instance.continueNum = 1;
             GameManager.instance.coinNum += 10;
         }
+
+        if (other.gameObject.tag == "coin")
+        {
+            Destroy(other.gameObject);
+            AddCoin();
+        }
+
+        if(other.gameObject.tag == "player_wall" && this.gameObject.tag == "Player")
+        {
+            isDown = true;
+        }
+        else if (other.gameObject.tag == "shadow_wall" && this.gameObject.tag == "Shadow")
+        {
+            isDown = true;
+        }
     }
 
     public void ContinuePlayer()
@@ -106,5 +124,14 @@ public class Player : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public void AddCoin()
+    {
+        stageCoin += 1;
+        if (textcoin != null)
+        {
+            textcoin.text = "×" + stageCoin.ToString();
+        }
     }
 }
