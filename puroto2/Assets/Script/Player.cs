@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     public float jumpForce;
     public int count;
     public float maxSpeed;
+    public float shadowMode=1;
 
     public Vector3 rbVelo;
 
@@ -22,12 +23,17 @@ public class Player : MonoBehaviour
 
     public GameObject kage;
 
+    public GameObject stageManager;
+
     public int stageCoin;
     public UnityEngine.UI.Text textcoin;
+
+    public StageManager stage;
     // Start is called before the first frame update
     void Start()
     {
         rd = GetComponent<Rigidbody>();
+        stage = stageManager.GetComponent<StageManager>();
     }
 
     // Update is called once per frame
@@ -51,12 +57,13 @@ public class Player : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.Z))
         {
-            if(playerMode==true)
+            if(playerMode==true&&shadowMode>0)
             {
                 gameObject.tag = "Shadow";
                 normal.SetActive(false);
                 shadow.SetActive(true);
                 playerMode = false;
+               
             }
             else
             {
@@ -64,9 +71,27 @@ public class Player : MonoBehaviour
                 normal.SetActive(true);
                 shadow.SetActive(false);
                 playerMode = true;
+                
             }
         }
 
+        if(playerMode==false&&shadowMode>0)
+        {
+            shadowMode -= 1.0f * Time.deltaTime;
+            stage.ShadowGaugeDown();
+        }
+        else if(playerMode==true&&shadowMode<1)
+        {
+            shadowMode += 0.1f * Time.deltaTime;
+            stage.ShadowGaugeUp();
+        }
+        if(shadowMode<=0)
+        {
+            gameObject.tag = "Player";
+            normal.SetActive(true);
+            shadow.SetActive(false);
+            playerMode = true;
+        }
       
     }
 
