@@ -27,8 +27,8 @@ public class StageManager : MonoBehaviour
         if(player.IsDown())
         {
             playerObj.transform.position = continuePoint[GameManager.instance.continueNum].transform.position;
-            player.ContinuePlayer();
-            
+            //player.ContinuePlayer();
+            StartCoroutine(player.ContinuePlayer());
         }
     }
 

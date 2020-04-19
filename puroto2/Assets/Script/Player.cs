@@ -9,10 +9,10 @@ public class Player : MonoBehaviour
     public float moveSpeed;
     public float jumpForce;
     public int count;
-    public float maxSpeed;
+    //public float maxSpeed;
     public float shadowMode=1;
 
-    public Vector3 rbVelo;
+    //public Vector3 rbVelo;
 
     public bool isJump;
     public bool playerMode=true;
@@ -39,9 +39,13 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        rbVelo = rd.velocity;
+        //rbVelo = rd.velocity;
+        
+        //rd.AddForce(new Vector3(moveSpeed, 0, 0), ForceMode.Force);
 
-        rd.AddForce(new Vector3(moveSpeed, 0, 0), ForceMode.Force);
+        rd.velocity= new Vector3(moveSpeed, rd.velocity.y, 0);
+
+        
         
         if(Input.GetKeyDown(KeyCode.Space)&&count<2)
         {
@@ -55,7 +59,7 @@ public class Player : MonoBehaviour
             isDown = true;
         }
 
-        if(Input.GetKeyDown(KeyCode.Z))
+        if(Input.GetKeyDown(KeyCode.Z)|| shadowMode <= 0)
         {
             if(playerMode==true&&shadowMode>0)
             {
@@ -85,14 +89,8 @@ public class Player : MonoBehaviour
             shadowMode += 0.1f * Time.deltaTime;
             stage.ShadowGaugeUp();
         }
-        if(shadowMode<=0)
-        {
-            gameObject.tag = "Player";
-            normal.SetActive(true);
-            shadow.SetActive(false);
-            playerMode = true;
-        }
-      
+
+       // GameManager.instance.coinNum = stageCoin;
     }
 
     private void OnCollisionEnter(Collision coll)
@@ -117,7 +115,7 @@ public class Player : MonoBehaviour
         if (other.gameObject.tag == "CheckPoint")
         {
             GameManager.instance.continueNum = 1;
-            GameManager.instance.coinNum += 10;
+            //GameManager.instance.coinNum += 10;
         }
 
         if (other.gameObject.tag == "coin")
@@ -136,10 +134,15 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void ContinuePlayer()
+    public IEnumerator ContinuePlayer()
     {
         isDown = false;
         playerMode = true;
+        //gameObject.transform.position = new Vector3(gameObject.transform.position.x, 5.0f, 0.0f);
+        moveSpeed = 0;
+        yield return new WaitForSeconds(0.45f);
+        moveSpeed = 10;
+        yield break;
     }
     
     public bool IsDown()
