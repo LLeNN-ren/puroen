@@ -141,7 +141,7 @@ public class Player : MonoBehaviour
         //gameObject.transform.position = new Vector3(gameObject.transform.position.x, 5.0f, 0.0f);
         moveSpeed = 0;
         yield return new WaitForSeconds(0.45f);
-        moveSpeed = 10;
+        moveSpeed = 7;
         yield break;
     }
     
