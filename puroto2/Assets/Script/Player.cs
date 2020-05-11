@@ -45,9 +45,14 @@ public class Player : MonoBehaviour
 
         rd.velocity= new Vector3(moveSpeed, rd.velocity.y, 0);
 
-        
-        
-        if(Input.GetKeyDown(KeyCode.Space)&&count<2)
+        if (shadowMode >= 1)
+        {
+            shadowMode = 1.0f;
+        }
+
+
+
+        if (Input.GetKeyDown(KeyCode.Space)&&isJump == false)
         {
             rd.AddForce(transform.up * jumpForce, ForceMode.Impulse);
             count++;
@@ -81,7 +86,7 @@ public class Player : MonoBehaviour
 
         if(playerMode==false&&shadowMode>0)
         {
-            shadowMode -= 1.0f * Time.deltaTime;
+            shadowMode -= 0.2f * Time.deltaTime;
             stage.ShadowGaugeDown();
         }
         else if(playerMode==true&&shadowMode<1)
@@ -95,7 +100,7 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter(Collision coll)
     {
-        if(coll.gameObject.tag=="ground")
+        if(coll.gameObject.tag=="ground" || coll.gameObject.tag == "kage")
         {
             isJump = false;
         }
@@ -120,15 +125,17 @@ public class Player : MonoBehaviour
 
         if (other.gameObject.tag == "coin")
         {
+            shadowMode += 0.05f;
+            moveSpeed += 0.0f;
             Destroy(other.gameObject);
             AddCoin();
         }
 
-        if(other.gameObject.tag == "player_wall" && this.gameObject.tag == "Player")
+        if(other.gameObject.tag == "player_wall" && gameObject.tag == "Player")
         {
             isDown = true;
         }
-        else if (other.gameObject.tag == "shadow_wall" && this.gameObject.tag == "Shadow")
+        else if (other.gameObject.tag == "shadow_wall" && gameObject.tag == "Shadow")
         {
             isDown = true;
         }
@@ -156,7 +163,7 @@ public class Player : MonoBehaviour
 
     public void AddCoin()
     {
-        stageCoin += 1;
+        stageCoin += 100;
         if (textcoin != null)
         {
             textcoin.text = "×" + stageCoin.ToString();
