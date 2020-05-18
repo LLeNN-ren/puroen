@@ -95,7 +95,7 @@ MonoBehaviour:
   m_MinSize: {x: 919, y: 444}
   m_MaxSize: {x: 22014, y: 10022}
   vertical: 0
-  controlID: 74
+  controlID: 94
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -301,23 +301,23 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
-      m_LastClickedID: 0
-      m_ExpandedIDs: e2e5ffffdce6fffffeeaffff72ebffffd0edfffffaefffffdcf1ffffa0f7ffff5ef8ffff18f9ffff6cf9ffff9ef9ffffe2f9ffff8cfaffffde340000123500005e3600001c390000ae3a0000463d0000dc3d0000343e0000
+      m_SelectedIDs: 84350000
+      m_LastClickedID: 13700
+      m_ExpandedIDs: f8f9ffffa8faffffdafaffff6efbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: sceneSelect
-        m_OriginalName: sceneSelect
+        m_Name: 
+        m_OriginalName: 
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: -5378
+        m_UserData: 0
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 0
+        m_OriginalEventType: 11
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 7}
       m_SearchString: 
@@ -404,20 +404,20 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scenes
+    - Assets
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Scenes
+  - Assets
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\M0118175\puroen\puroto2
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 6e2d0000
-    m_LastClickedID: 11630
-    m_ExpandedIDs: 00000000342d000000ca9a3b
+    m_SelectedIDs: b22c0000
+    m_LastClickedID: 11442
+    m_ExpandedIDs: 00000000b22c000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -445,7 +445,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000342d0000
+    m_ExpandedIDs: 00000000b22c0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -472,7 +472,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 1
+    m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: 00000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -497,7 +497,7 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
     m_NewAssetIndexInList: -1
-    m_ScrollPosition: {x: 0, y: 0}
+    m_ScrollPosition: {x: 0, y: 120}
     m_GridSize: 64
   m_SkipHiddenPackages: 0
   m_DirectoriesAreaWidth: 112

@@ -11,6 +11,7 @@ public class PlayMenu : MonoBehaviour
     public GameObject BackGame;
 
     public float Keep;
+    public bool kidou;
 
     // Start is called before the first frame update
     void Start()
@@ -20,6 +21,7 @@ public class PlayMenu : MonoBehaviour
 
         BackTitle.SetActive(false);
         BackGame.SetActive(false);
+        kidou = false;
     }
 
     // Update is called once per frame
@@ -29,11 +31,15 @@ public class PlayMenu : MonoBehaviour
     }
     public void OnClick()
     {
-        Keep = player.moveSpeed;
-        player.moveSpeed = 0;
-        Timer.time = false;
+        if (kidou == false)
+        {
+            Keep = player.moveSpeed;
+            player.moveSpeed = 0;
+            Timer.time = false;
 
-        BackTitle.SetActive(true);
-        BackGame.SetActive(true);
+            BackTitle.SetActive(true);
+            BackGame.SetActive(true);
+            kidou = true;
+        }
     }
 }

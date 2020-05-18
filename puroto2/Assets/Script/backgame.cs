@@ -27,6 +27,7 @@ public class backgame : MonoBehaviour
     {
         player.moveSpeed = playmenu.Keep;
         Timer.time = true;
+        playmenu.kidou = false;
 
         BackTitle.SetActive(false);
         BackGame.SetActive(false);
