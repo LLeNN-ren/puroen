@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     public bool isJump;
     public bool playerMode=true;
     public bool isDown = false;
+    public bool player_rotation = false;
 
     public GameObject normal;
     public GameObject shadow;
@@ -29,11 +30,18 @@ public class Player : MonoBehaviour
     public UnityEngine.UI.Text textcoin;
 
     public StageManager stage;
+
+    public CriAtomSource jumpSound;
+    public CriAtomSource shadowInSound;
+    public CriAtomSource shadowOutSound;
+    public CriAtomSource soulGetSound;
+    public CriAtomSource landingSound;
     // Start is called before the first frame update
     void Start()
     {
         rd = GetComponent<Rigidbody>();
         stage = stageManager.GetComponent<StageManager>();
+        
     }
 
     // Update is called once per frame
@@ -44,6 +52,7 @@ public class Player : MonoBehaviour
         //rd.AddForce(new Vector3(moveSpeed, 0, 0), ForceMode.Force);
 
         rd.velocity= new Vector3(moveSpeed, rd.velocity.y, 0);
+        
 
         if (shadowMode >= 1)
         {
@@ -56,7 +65,8 @@ public class Player : MonoBehaviour
         {
             rd.AddForce(transform.up * jumpForce, ForceMode.Impulse);
             count++;
-            
+            jumpSound.Play();
+
         }
 
         if(this.gameObject.transform.position.y<-16)
@@ -72,7 +82,8 @@ public class Player : MonoBehaviour
                 normal.SetActive(false);
                 shadow.SetActive(true);
                 playerMode = false;
-               
+                shadowInSound.Play();
+
             }
             else
             {
@@ -80,7 +91,8 @@ public class Player : MonoBehaviour
                 normal.SetActive(true);
                 shadow.SetActive(false);
                 playerMode = true;
-                
+                shadowOutSound.Play();
+
             }
         }
 
@@ -95,6 +107,14 @@ public class Player : MonoBehaviour
             stage.ShadowGaugeUp();
         }
 
+        if(player_rotation==true)
+        {
+            rd.velocity = new Vector3(-moveSpeed, rd.velocity.y, 0);
+        }
+        else
+        {
+            rd.velocity = new Vector3(moveSpeed, rd.velocity.y, 0);
+        }
        // GameManager.instance.coinNum = stageCoin;
     }
 
@@ -103,8 +123,20 @@ public class Player : MonoBehaviour
         if(coll.gameObject.tag=="ground" || coll.gameObject.tag == "kage")
         {
             isJump = false;
+            landingSound.Play();
         }
-       
+        if (coll.gameObject.tag == "glass" && player_rotation == false)
+        {
+            player_rotation = true;
+            gameObject.transform.Rotate(0.0f, 180.0f, 0.0f);
+        }
+        else if(coll.gameObject.tag=="glass"&&player_rotation==true)
+        {
+            player_rotation = false;
+            gameObject.transform.Rotate(0.0f, 180.0f, 0.0f);
+        }
+
+
     }
     private void OnCollisionExit(Collision coll)
     {
@@ -139,6 +171,8 @@ public class Player : MonoBehaviour
         {
             isDown = true;
         }
+
+       
     }
 
     public IEnumerator ContinuePlayer()
@@ -163,6 +197,7 @@ public class Player : MonoBehaviour
 
     public void AddCoin()
     {
+        soulGetSound.Play();
         stageCoin += 100;
         if (textcoin != null)
         {
