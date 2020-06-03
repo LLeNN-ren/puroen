@@ -122,17 +122,15 @@ public class Player : MonoBehaviour
     {
         if(coll.gameObject.tag=="ground" || coll.gameObject.tag == "kage")
         {
-            isJump = false;
+            //isJump = false;
             landingSound.Play();
         }
-        if (coll.gameObject.tag == "glass" && player_rotation == false&&playerMode==true||
-            coll.gameObject.tag=="wall"&& player_rotation == false)
+        if (coll.gameObject.tag == "glass" && player_rotation == false)
         {
             player_rotation = true;
             gameObject.transform.Rotate(0.0f, 180.0f, 0.0f);
         }
-        else if(coll.gameObject.tag=="glass"&&player_rotation==true&&playerMode==true||
-            coll.gameObject.tag == "wall"&& player_rotation == true)
+        else if(coll.gameObject.tag=="glass"&&player_rotation==true)
         {
             player_rotation = false;
             gameObject.transform.Rotate(0.0f, 180.0f, 0.0f);
@@ -140,7 +138,15 @@ public class Player : MonoBehaviour
 
 
     }
-    private void OnCollisionExit(Collision coll)
+    private void OnCollisionStay(Collision coll)
+    {
+        if (coll.gameObject.tag == "ground" || coll.gameObject.tag == "kage")
+        {
+            isJump = false;
+            //landingSound.Play();
+        }
+    }
+private void OnCollisionExit(Collision coll)
     {
         if(coll.gameObject.tag=="ground"||coll.gameObject.tag=="kage")
         {

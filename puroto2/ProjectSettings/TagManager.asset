@@ -11,6 +11,7 @@ TagManager:
   - coin
   - player_wall
   - glass
+  - wall
   layers:
   - Default
   - TransparentFX
