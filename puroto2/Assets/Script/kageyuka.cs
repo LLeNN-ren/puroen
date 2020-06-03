@@ -5,11 +5,13 @@ using UnityEngine;
 public class kageyuka : MonoBehaviour
 {
     BoxCollider box;
+    Player player;
     private bool isDown=false;
     // Start is called before the first frame update
     void Start()
     {
         box = GetComponent<BoxCollider>();
+        player = GameObject.Find("Player").GetComponent<Player>();
     }
 
     // Update is called once per frame
@@ -32,6 +34,7 @@ public class kageyuka : MonoBehaviour
         {
             box.isTrigger = false;
             isDown = true;
+            player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 0.5f, 0.0f);
         }
     }
 
@@ -40,13 +43,29 @@ public class kageyuka : MonoBehaviour
         if (coll.gameObject.tag == "Player")
         {
             box.isTrigger = false;
+
         }
         if (coll.gameObject.tag == "Shadow")
         {
             box.isTrigger = true;
             isDown = true;
+
         }
     }
 
-    
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            box.isTrigger = true;
+        }
+        if (other.gameObject.tag == "Shadow")
+        {
+            box.isTrigger = false;
+            isDown = true;
+            player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 0.5f, 0.0f);
+        }
+    }
+
+
 }
