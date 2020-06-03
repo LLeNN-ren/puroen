@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StageManager : MonoBehaviour
 {
     public GameObject playerObj;
     public GameObject[] continuePoint;
+    public GameObject shadowGauge;
 
     private Player player;
    
@@ -16,6 +18,7 @@ public class StageManager : MonoBehaviour
         {
             playerObj.transform.position = continuePoint[0].transform.position;
             player = playerObj.GetComponent<Player>();
+            
         }
     }
 
@@ -24,7 +27,18 @@ public class StageManager : MonoBehaviour
         if(player.IsDown())
         {
             playerObj.transform.position = continuePoint[GameManager.instance.continueNum].transform.position;
-            player.ContinuePlayer();
+            //player.ContinuePlayer();
+            StartCoroutine(player.ContinuePlayer());
         }
+    }
+
+    public void ShadowGaugeUp()
+    {
+        shadowGauge.GetComponent<Image>().fillAmount =player.shadowMode;
+    }
+
+    public void ShadowGaugeDown()
+    {
+        shadowGauge.GetComponent<Image>().fillAmount=player.shadowMode;
     }
 }

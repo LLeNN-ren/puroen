@@ -8,6 +8,10 @@ TagManager:
   - Shadow
   - kage
   - CheckPoint
+  - coin
+  - player_wall
+  - glass
+  - wall
   layers:
   - Default
   - TransparentFX

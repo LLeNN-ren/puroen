@@ -20,7 +20,7 @@ public class Goal : MonoBehaviour
 
     private void OnCollisionEnter(Collision coll)
     {
-        if(coll.gameObject.tag=="Player")
+        if(coll.gameObject.tag=="Player"|| coll.gameObject.tag == "Shadow")
         {
             Destroy(gameObject);
             GameManager.instance.stageNum += 1;

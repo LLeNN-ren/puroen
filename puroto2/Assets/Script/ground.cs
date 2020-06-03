@@ -16,13 +16,37 @@ public class ground : MonoBehaviour
     {
         
     }
-    private void OnCollisionStay(Collision coll)
+    private void OnCollisionEnter(Collision coll)
     {
-        if(coll.gameObject.tag=="Player")
+        if (coll.gameObject.tag == "Player")
         {
             box.isTrigger = false;
         }
-        if(coll.gameObject.tag=="Shadow")
+        if (coll.gameObject.tag == "Shadow")
+        {
+            box.isTrigger = true;
+        }
+    }
+
+    private void OnCollisionStay(Collision coll)
+    {
+        if (coll.gameObject.tag == "Player")
+        {
+            box.isTrigger = false;
+        }
+        if (coll.gameObject.tag == "Shadow")
+        {
+            box.isTrigger = true;
+        }
+    }
+
+    private void OnTriggerEnter(Collider coll)
+    {
+        if (coll.gameObject.tag == "Player")
+        {
+            box.isTrigger = false;
+        }
+        if (coll.gameObject.tag == "Shadow")
         {
             box.isTrigger = true;
         }
