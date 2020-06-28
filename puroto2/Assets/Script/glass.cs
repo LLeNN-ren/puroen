@@ -5,12 +5,10 @@ using UnityEngine;
 public class glass : MonoBehaviour
 {
     BoxCollider box;
-    Player player;
     // Start is called before the first frame update
     void Start()
     {
         box = GetComponent<BoxCollider>();
-        player = GameObject.Find("Player").GetComponent<Player>();
     }
 
     // Update is called once per frame
@@ -18,26 +16,39 @@ public class glass : MonoBehaviour
     {
         
     }
-
     private void OnCollisionEnter(Collision coll)
     {
-        if(coll.gameObject.tag== "Shadow")
+        if (coll.gameObject.tag == "Player")
         {
             box.isTrigger = true;
         }
+        if (coll.gameObject.tag == "Shadow")
+        {
+            box.isTrigger = false;
+        }
+    }
+
+    private void OnCollisionStay(Collision coll)
+    {
         if (coll.gameObject.tag == "Player")
         {
-            box.isTrigger = false;
+            box.isTrigger = true;
         }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if(other.gameObject.tag=="Shadow"||other)
+        if (coll.gameObject.tag == "Shadow")
         {
             box.isTrigger = false;
         }
-        
     }
 
-
+    private void OnTriggerEnter(Collider coll)
+    {
+        if (coll.gameObject.tag == "Player")
+        {
+            box.isTrigger = true;
+        }
+        if (coll.gameObject.tag == "Shadow")
+        {
+            box.isTrigger = false;
+        }
+    }
 }

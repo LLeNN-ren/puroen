@@ -44,4 +44,28 @@ public class teleport : MonoBehaviour
             Ptransform.position = Ppos;
         }
     }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.tag == "Shadow")
+        {
+            //Vector3 TAposition = TeleportArea.transform.position;
+            //Vector3 Pposition = Player.transform.position;
+            Transform TAtransform = TeleportArea.transform;
+            Vector3 TApos = TAtransform.position;
+
+            Transform Ptransform = Player.transform;
+            Vector3 Ppos = Ptransform.position;
+
+            Ppos.x = TApos.x;
+            Ppos.y = TApos.y + 2.0f;
+
+            Player.gameObject.tag = "Player";
+            player.normal.SetActive(true);
+            player.shadow.SetActive(false);
+            player.playerMode = true;
+
+            Ptransform.position = Ppos;
+        }
+    }
 }

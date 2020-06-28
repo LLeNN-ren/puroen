@@ -135,9 +135,28 @@ public class Player : MonoBehaviour
             player_rotation = false;
             gameObject.transform.Rotate(0.0f, 180.0f, 0.0f);
         }
-
-
+        /*if (coll.gameObject.tag == "wall" && player_rotation == false)
+        {
+            player_rotation = true;
+            gameObject.transform.Rotate(0.0f, 180.0f, 0.0f);
+        }
+        else if (coll.gameObject.tag == "wall" && player_rotation == true)
+        {
+            player_rotation = false;
+            gameObject.transform.Rotate(0.0f, 180.0f, 0.0f);
+        }*/
+        //死亡判定こいつらじゃ無理だった↓
+        //GameManegerをタイトルシーンからゲームシーンにコピペしました。タイトルシーンから開始するなら動く↓ので消した方がいい。作ってるときだけはあるとゲームシーンからすぐ始められて便利そうなだけ。
+        if (coll.gameObject.tag == "wall")
+        {
+            isDown = true;
+        }
+        else if (coll.gameObject.tag == "wall")
+        {
+            isDown = true;
+        }
     }
+
     private void OnCollisionStay(Collision coll)
     {
         if (coll.gameObject.tag == "ground" || coll.gameObject.tag == "kage")
@@ -206,7 +225,7 @@ private void OnCollisionExit(Collision coll)
     public void AddCoin()
     {
         soulGetSound.Play();
-        stageCoin += 100;
+        stageCoin += 1;
         if (textcoin != null)
         {
             textcoin.text = "×" + stageCoin.ToString();

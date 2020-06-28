@@ -22,9 +22,9 @@ public class Goal : MonoBehaviour
     {
         if(coll.gameObject.tag=="Player"|| coll.gameObject.tag == "Shadow")
         {
-            Destroy(gameObject);
             GameManager.instance.stageNum += 1;
             SceneManager.LoadScene("clearScene");
+            Destroy(gameObject);
         }
     }
 }
