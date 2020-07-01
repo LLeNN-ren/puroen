@@ -23,82 +23,101 @@ using UnityEngine;
 
 /**
  * <summary>外部音声を入力するためのAuxIn</summary>
- * \par 説明:
+ * <remarks>
+ * <para header='説明'>
  * AuxInはADX2の外部の音声データをADX2のDSPバスに流すことができます。<br/>
  * 入力データの再生開始、ステータスの取得、入力データの書込み等の制御を行います。<br/>
+ * </para>
+ * </remarks>
  */
 public class CriAtomExAuxIn : CriDisposable
 {
 	/**
 	 * <summary>AuxIn作成用コンフィグ構造体</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * 音声入力用のAuxInハンドルを作成するための、動作仕様を指定するための構造体です。<br/>
 	 * 作成時の引数に指定します。<br/>
 	 * <br/>
 	 * 作成されるAuxInハンドルは、ハンドル作成時に本構造体で指定された設定に応じて、
 	 * 内部リソースを必要なだけ確保します。<br/>
 	 * プレーヤが必要とするワーク領域のサイズは、本構造体で指定されたパラメータに応じて変化します。
+	 * </para>
+	 * </remarks>
 	 */
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 	public struct Config
 	{
 		/**
 		 * <summary>最大出力チャンネル数</summary>
-		 * \par 説明:
+		 * <remarks>
+		 * <para header='説明'>
 		 * AtomInで再生する音声のチャンネル数を指定します。<br/>
 		 * 作成されたAuxInは、max_channelsで指定したチャンネル数"以下の"音声データを
 		 * 再生可能です。<br/>
 		 * 最大出力チャンネル数として指定する値と、作成されたAuxInで再生可能なデータの
 		 * 関係を以下に示します。<br/>
-		 * |最大出力チャンネル数（指定する値）	| 作成されたAuxInで再生可能なデータ	|
+		 * |最大出力チャンネル数（指定する値） | 作成されたAuxInで再生可能なデータ   |
 		 * |-------------------------------|-------------------------------|
-		 * |1								| モノラル							|
-		 * |2								| モノラル、ステレオ					|
-		 * |6								| モノラル、ステレオ、5.1ch			|
-		 * |8								| モノラル、ステレオ、5.1ch、7.1ch		|
+		 * |1                               | モノラル                          |
+		 * |2                               | モノラル、ステレオ                   |
+		 * |6                               | モノラル、ステレオ、5.1ch           |
+		 * |8                               | モノラル、ステレオ、5.1ch、7.1ch       |
 		 * <br/>
-		 * \par 備考:
+		 * </para>
+		 * <para header='備考'>
 		 * サウンド出力時にハードウェアリソースを使用するプラットフォームにおいては、
 		 * 出力チャンネル数を小さくすることで、ハードウェアリソースの消費を抑えることが
 		 * 可能です。<br/>
-		 * \attention
+		 * </para>
+		 * <para header='注意'>
 		 * 指定された最大出力チャンネル数を超えるデータは、再生することはできません。<br/>
 		 * 例えば、最大出力チャンネル数を1に設定した場合、作成されたAuxInで
 		 * ステレオ音声を再生することはできません。<br/>
 		 * （モノラルにダウンミックスされて出力されることはありません。）
-		*/
+		 * </para>
+		 * </remarks>
+		 */
 		public int maxChannels;
 
 		/**
 		 * <summary>最大サンプリングレート</summary>
-		 * \par 説明:
+		 * <remarks>
+		 * <para header='説明'>
 		 * AuxInで再生する音声のサンプリングレートを指定します。<br/>
 		 * 作成されたAuxInは、max_sampling_rateで指定したサンプリングレート"以下の"
 		 * 音声データを再生可能です。<br/>
 		 * <br/>
-		 * \par 備考:
+		 * </para>
+		 * <para header='備考'>
 		 * 最大サンプリングレートを下げることで、AuxIn作成時に必要となるワークメモリ
 		 * のサイズを抑えることが可能です。
-		 * \attention
+		 * </para>
+		 * <para header='注意'>
 		 * 指定された最大サンプリングレートを超えるデータは、再生することはできません。<br/>
 		 * 例えば、最大サンプリングレートを24000に設定した場合、作成されたAuxInで
 		 * 48000Hzの音声を再生することはできません。<br/>
 		 * （ダウンサンプリングされて出力されることはありません。）
-		*/
+		 * </para>
+		 * </remarks>
+		 */
 		public int maxSamplingRate;
 
 		/**
 		 * <summary>サウンドレンダラタイプ</summary>
-		 * \par 説明:
+		 * <remarks>
+		 * <para header='説明'>
 		 * AuxInが使用するサウンドレンダラの種別を指定します。<br/>
 		 * CriAtomEx.SoundRendererType.Native を指定した場合、
 		 * 音声データは各プラットフォームのサウンド出力に転送されます。<br/>
 		 * CriAtomEx.SoundRendererType.Asr を指定した場合、
 		 * 音声データはASR（Atom Sound Renderer）に転送されます。<br/>
 		 * （ASRの出力先は、ASR初期化時に別途指定。）
-		*/
+		 * </para>
+		 * </remarks>
+		 */
 		public CriAtomEx.SoundRendererType soundRendererType;
-		
+
 		public static Config Default {
 			get {
 				Config config = new Config();
@@ -123,20 +142,24 @@ public class CriAtomExAuxIn : CriDisposable
 
 	/**
 	 * <summary>AuxInの作成</summary>
-	 * <param name="config">AuxIn作成用コンフィグ構造体</param>
+	 * <param name='config'>AuxIn作成用コンフィグ構造体</param>
 	 * <returns>AtomAuxInハンドル</returns>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * 音声入力用のAuxInを作成します。<br/>
 	 * AuxInはADX2の外部の音声データをADX2のDSPバスに流すことができます。<br/>
 	 * <br/>
 	 * 音声の再生を開始するには::CriAtomExAuxIn::Start 関数を実行します。<br/>
 	 * 入力する音声は ::CriAtomExAuxIn::SetInputReadStream に指定するコールバック関数を
 	 * 経由してAuxInに渡します。<br/>
-	 * \attention
+	 * </para>
+	 * <para header='注意'>
 	 * 本関数は完了復帰型の関数です。実行にかかる時間は、プラットフォームによって異なります。<br/>
 	 * マイクの作成／破棄は、シーンの切り替わり等、負荷変動を許容できる
 	 * タイミングで行うようお願いいたします。<br/>
-	 * \sa CriAtomExAuxIn::Destroy
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExAuxIn::Destroy'/>
 	 */
 	public CriAtomExAuxIn(Config? config = null)
 	{
@@ -151,13 +174,17 @@ public class CriAtomExAuxIn : CriDisposable
 
 	/**
 	 * <summary>AuxInの破棄</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * AuxInを破棄します。<br/>
-	 * \attention
+	 * </para>
+	 * <para header='注意'>
 	 * 本関数は完了復帰型の関数です。実行にかかる時間は、プラットフォームによって異なります。<br/>
 	 * マイクの作成／破棄は、シーンの切り替わり等、負荷変動を許容できる
 	 * タイミングで行うようお願いいたします。<br/>
-	 * \sa CriAtomExAuxIn::CriAtomExAuxIn
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExAuxIn::CriAtomExAuxIn'/>
 	 */
 	public override void Dispose()
 	{
@@ -173,9 +200,12 @@ public class CriAtomExAuxIn : CriDisposable
 
 	/**
 	 * <summary>AuxInの再生開始</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * AuxInの再生を開始します。<br/>
-	 * \sa CriAtomExAuxIn::Stop
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExAuxIn::Stop'/>
 	 */
 	public void Start()
 	{
@@ -187,9 +217,12 @@ public class CriAtomExAuxIn : CriDisposable
 
 	/**
 	 * <summary>AuxInの再生停止</summary>
-	 * \par 説明:
+	 * <remarks>
+	 * <para header='説明'>
 	 * AuxInの再生を停止します。<br/>
-	 * \sa CriAtomExAuxIn::Start
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExAuxIn::Start'/>
 	 */
 	public void Stop()
 	{
@@ -201,12 +234,15 @@ public class CriAtomExAuxIn : CriDisposable
 
 	/**
 	 * <summary>フォーマットの設定</summary>
-	 * <param name="numChannels">チャンネル数</param>
-	 * <param name="samplingRate">サンプリング周波数</param>
-	 * \par 説明:
+	 * <param name='numChannels'>チャンネル数</param>
+	 * <param name='samplingRate'>サンプリング周波数</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * 再生を行う音声のフォーマットを設定します。<br/>
 	 * ::CriAtomExAuxIn::Start を呼ぶ前に設定する必要があります。<br/>
-	 * \sa CriAtomExAuxIn::GetFormat
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExAuxIn::GetFormat'/>
 	 */
 	public void SetFormat(int numChannels, int samplingRate)
 	{
@@ -217,11 +253,14 @@ public class CriAtomExAuxIn : CriDisposable
 
 	/**
 	 * <summary>フォーマットの取得</summary>
-	 * <param name="numChannels">チャンネル数</param>
-	 * <param name="samplingRate">サンプリング周波数</param>
-	 * \par 説明:
+	 * <param name='numChannels'>チャンネル数</param>
+	 * <param name='samplingRate'>サンプリング周波数</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * ::CriAtomExAuxIn::SetFormat で設定したフォーマット情報を取得します。<br/>
-	 * \sa CriAtomExAuxIn::SetFormat
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExAuxIn::SetFormat'/>
 	 */
 	public void GetFormat(out int numChannels, out int samplingRate)
 	{
@@ -235,8 +274,9 @@ public class CriAtomExAuxIn : CriDisposable
 
 	/**
 	 * <summary>ボリューム設定</summary>
-	 * <param name="volume">ボリューム値</param>
-	 * \par 説明:
+	 * <param name='volume'>ボリューム値</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * AuxInの音声のボリュームを設定をします。<br/>
 	 * <br/>
 	 * ボリューム値は音声データの振幅に対する倍率です（単位はデシベルではありません）。<br/>
@@ -244,6 +284,8 @@ public class CriAtomExAuxIn : CriDisposable
 	 * 0.5fを指定した場合、原音波形の振幅を半分にしたデータと同じ音量（-6dB）で
 	 * 音声が出力されます。<br/>
 	 * 0.0fを指定した場合、音声はミュートされます（無音になります）。
+	 * </para>
+	 * </remarks>
 	 */
 	public void SetVolume(float volume)
 	{
@@ -254,8 +296,9 @@ public class CriAtomExAuxIn : CriDisposable
 
 	/**
 	 * <summary>周波数調整比の設定</summary>
-	 * <param name="frequencyRatio">周波数調整比(0.25f～4.0f)</param>
-	 * \par 説明:
+	 * <param name='frequencyRatio'>周波数調整比(0.25f～4.0f)</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * AuxInの音声の周波数調整比を設定します。<br/>
 	 * 周波数調整比は、音声データの周波数と再生周波数の比率で、再生速度の倍率と等価です。<br/>
 	 * 周波数比が1.0fを超える場合、音声データは原音より高速に再生され、
@@ -265,7 +308,8 @@ public class CriAtomExAuxIn : CriDisposable
 	 * 例えば、周波数比を1.0fで再生した場合、音声データは原音通りのピッチで再生されますが、
 	 * 周波数比を2.0fに変更した場合、ピッチは1オクターブ上がます。<br/>
 	 * （再生速度が2倍になるため。）<br/>
-	 * \attention
+	 * </para>
+	 * <para header='注意'>
 	 * 周波数比に1.0fを超える値を設定した場合、再生する音声のデータが通常より
 	 * 速く消費されるため、音声データの供給をより早く行う必要があります。<br/>
 	 * 周波数比に1.0fを超える値を設定する場合には、AuxIn作成時に指定する
@@ -273,6 +317,8 @@ public class CriAtomExAuxIn : CriDisposable
 	 * （AuxIn作成時に指定する ::CriAtomExAuxIn::Config 構造体
 	 * の maxSamplingRate の値に、「原音のサンプリングレート×周波数比」で
 	 * 計算される値を指定する必要があります。）<br/>
+	 * </para>
+	 * </remarks>
 	 */
 	public void SetFrequencyRatio(float frequencyRatio)
 	{
@@ -283,9 +329,10 @@ public class CriAtomExAuxIn : CriDisposable
 
 	/**
 	 * <summary>バスセンドレベル設定</summary>
-	 * <param name="busName">バス名</param>
-	 * <param name="level">レベル値（0.0f?1.0f）</param>
-	 * \par 説明:
+	 * <param name='busName'>バス名</param>
+	 * <param name='level'>レベル値（0.0f?1.0f）</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * AuxInの音声のバスセンドレベルを設定します。<br/>
 	 * バスセンドレベルは、音声をどのバスにどれだけ流すかを指定するための仕組みです。<br/>
 	 * <br/>
@@ -294,6 +341,8 @@ public class CriAtomExAuxIn : CriDisposable
 	 * <br/>
 	 * 第2引数のバス名で指定したバスが適用中のDSPバス設定に存在しない場合、設定値は無効値として処理されます。<br/>
 	 * センドレベル値の範囲や扱いは、ボリュームと同等です。::CriAtomExAuxIn::SetVolume 関数を参照してください。
+	 * </para>
+	 * </remarks>
 	 */
 	public void SetBusSendLevel(string busName, float level)
 	{
@@ -304,11 +353,14 @@ public class CriAtomExAuxIn : CriDisposable
 
 	/**
 	 * <summary>リードストリームの設定</summary>
-	 * <param name="stream">リードストリーム</param>
-	 * \par 説明:
+	 * <param name='stream'>リードストリーム</param>
+	 * <remarks>
+	 * <para header='説明'>
 	 * AuxInの入力方向のリードストリームを設定します。<br/>
 	 * コールバック関数は大抵のプラットフォームで別スレッドから呼ばれるため、
 	 * 呼ばれる側はスレッドセーフ実装する必要があります。
+	 * </para>
+	 * </remarks>
 	 */
 	public void SetInputReadStream(CriAudioReadStream stream)
 	{
@@ -341,7 +393,7 @@ public class CriAtomExAuxIn : CriDisposable
 
 	[DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
 	private static extern void criAtomAuxIn_SetBusSendLevelByName(IntPtr aux_in, string bus_name, float level);
-			
+
 	[DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
 	private static extern void criAtomAuxIn_SetFormat(IntPtr aux_in, int num_channels, int sampling_rate);
 

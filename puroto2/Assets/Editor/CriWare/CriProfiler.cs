@@ -6,6 +6,7 @@
 #if UNITY_EDITOR
 
 using System;
+using System.IO;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
@@ -320,12 +321,14 @@ public partial class CriProfiler
 	public class PlaybackInfo {
 		public readonly UInt32 playbackId;
 		public readonly String cueName;
+		public readonly String cueSheetName;
 		public readonly UInt64 timestamp; 
 		public int? StreamType;
-		public PlaybackInfo(UInt32 playbackId, String cueName, UInt64 timestamp)
+		public PlaybackInfo(UInt32 playbackId, String cueName, String cueSheetName, UInt64 timestamp)
 		{
 			this.playbackId = playbackId;
 			this.cueName = cueName;
+			this.cueSheetName = cueSheetName;
 			this.timestamp = timestamp;
 			this.StreamType = null;
 		}
@@ -361,15 +364,21 @@ public partial class CriProfiler
 	private Thread threadPacketReading;
 	private ManualResetEvent threadTerminator = new ManualResetEvent(false);
 	private RingBuffer<byte> TcpBuffer = new RingBuffer<byte>(16384);
+	private List<byte[]> eventLogList = new List<byte[]>();
 	private bool isProfiling = false;
 	private bool isConnected = false;
 	private bool isBufferCorrupted = false;
+	private bool doSaveLog;
+	private FileStream logStream = null;
+	private const int cRwLockTimeoutMs = 100;
 	public bool IsProfiling {
 		get { return isProfiling; }
 	}
 	#endregion
 
 	#region Fields / Properties
+	public UInt64 timestamp { get; private set; }
+    public UInt64 timestampStart { get; private set; }
 	public Single cpu_load { get; private set; }
 	private RingBufferAutoDequeue<Single> cpuLoadHistory = new RingBufferAutoDequeue<float>(100);
 	public Single[] CpuLoadHistory {
@@ -410,8 +419,9 @@ public partial class CriProfiler
 	public LevelInfo[] LevelsAllCh {
 		get {
 			if(levels.Count > 0) {
-				LevelInfo[] levelsCopy = new LevelInfo[levels.Count];
+				LevelInfo[] levelsCopy;
 				lock (levels) {
+					levelsCopy = new LevelInfo[levels.Count];
 					levels.CopyTo(levelsCopy);
 				}
 				return levelsCopy;
@@ -421,6 +431,7 @@ public partial class CriProfiler
 		}
 	}
 	public String cuename_lastPlayed { get; private set; }
+    public String cuesheetName_lastPlayed { get; private set; }
 	private Hashtable playbackHashtable = new Hashtable();		/* Playback ID => Playback Info */
 	public PlaybackInfo[] PlaybackList {
 		get {
@@ -431,6 +442,7 @@ public partial class CriProfiler
 			}
 		}
 	}
+	private Dictionary<string, CueSheetGroup> multiLaneTimeline = new Dictionary<string, CueSheetGroup>();
 	private Hashtable voicePoolInfoTable = new Hashtable();		/* VoicePool Handle => VoicePool Info */
 	public enum VoicePoolFormat {
 		Standard,
@@ -464,6 +476,21 @@ public partial class CriProfiler
 			return -1;
 		}
 	}
+	public List<byte[]> GetLogList() {
+		return eventLogList;
+	}
+	public List<byte[]> GetLogList(int offset, int count) {
+		try {
+			offset = Mathf.Clamp(offset, 0, eventLogList.Count - 1);
+			count = Mathf.Clamp(count, 0, eventLogList.Count - offset);
+			return eventLogList.GetRange(offset, count);
+		} catch {
+			return new List<byte[]>();
+		}
+	}
+	public void ClearLog() {
+		eventLogList.Clear();
+	}
 	#endregion Fields / Properties
 
 	#region Data Initialization
@@ -472,6 +499,8 @@ public partial class CriProfiler
 	}
 
 	private void InitVals() {
+		this.timestamp = 0;
+		this.timestampStart = 0;
 		this.cpu_load = 0;
 		this.cpuLoadHistory.FillWithZeros();
 		this.num_used_voices = 0;
@@ -489,28 +518,58 @@ public partial class CriProfiler
 		this.numChMasterOut = 0;
 		this.voicePoolInfoTable.Clear();
 		this.playbackHashtable.Clear();
+		this.multiLaneTimeline.Clear();
 		this.levels.Clear();
+		this.eventLogList.Clear();
 	}
 	#endregion
 
 	#region Profiler Control
 	/* connection settings */
-	public string ipAddressString = "127.0.0.1";
 	private const int TCP_PORT = 2002;
 	private const int TCP_CHUNK = 2048;
 	private const int TCP_CONNECT_TIMEOUT_MS = 500;
 	private const int TCP_RETRY_INTERVAL_MS = 2000;
 	private const int TCP_RETRY = 5;
 	private const int BUFFERING_INTERVAL_MS = 10;
+	public const string LOG_FILE_EXTENSION = "crimon";
+
+	public string ipAddressString = "127.0.0.1";
+	public string LogFileSavePath { get; private set; }
 	/**
 	 * Starting the TCP sub thread.
 	 */
-	public void StartProfiling() {
+	public void StartProfiling(bool saveLog, string logDirPath = null) {
 		IPAddress validIp;
 		if(IPAddress.TryParse(ipAddressString, out validIp) == false) {
 			UnityEngine.Debug.LogWarning("[CRIWARE] (Profiler) IP address not valid - connection aborted. ");
 			return;
 		}
+
+		this.doSaveLog = saveLog;
+		if (this.doSaveLog) {
+			if (string.IsNullOrEmpty(logDirPath)) {
+				/* default log file path */
+				logDirPath = Path.Combine(Directory.GetParent(Application.dataPath).ToString(), "CriWareProfilerLog");
+			}
+			this.LogFileSavePath = logDirPath;
+			if (Directory.Exists(LogFileSavePath) == false) {
+				try {
+					Directory.CreateDirectory(LogFileSavePath);
+				} catch (Exception e) {
+					UnityEngine.Debug.LogError("[CRIWARE] Profiler: failed to create directory for log files. Msg: " + e.Message);
+				}
+			}
+			var filePath = Path.Combine(LogFileSavePath, "CriProfilerLog-" + DateTime.Now.ToString("yyyy-MM-dd-HHmmss") + "." + LOG_FILE_EXTENSION);
+			try {
+				this.logStream = new FileStream(filePath, FileMode.Create, FileAccess.Write);
+			} catch (Exception e) {
+				UnityEngine.Debug.LogError("[CRIWARE] Profiler: failed to create log file. Msg: " + e.Message);
+				this.logStream = null;
+				this.doSaveLog = false;
+			}
+		}
+
 		TcpParams tcpParams = new TcpParams(
 			validIp, 
 			TCP_PORT, 
@@ -539,6 +598,17 @@ public partial class CriProfiler
 	public void StopProfiling() {
 		threadTerminator.Set();
 		ResetVals();
+
+		if (this.logStream != null) {
+			this.doSaveLog = false;
+			try {
+				this.logStream.Flush();
+				this.logStream.Close();
+				this.logStream = null;
+			} catch (Exception e) {
+				UnityEngine.Debug.LogError("[CRIWARE] Profiler: failed to flush log file. Msg: " + e.Message);
+			}
+		}
 	}
 
 	private CriProfiler() {
@@ -567,7 +637,7 @@ public partial class CriProfiler
 					this.isConnected = true;
 					UnityEngine.Debug.Log("[CRIWARE] CRI Profiler connected.");
 					BufferingLoop(tcpClient, tcpParams);
-				} catch (SocketException) {
+				} catch {
 					failedConnectCnt += 1;
 					if(failedConnectCnt > tcpParams.connectionRetryLimit) {
 						UnityEngine.Debug.LogWarning("[CRIWARE] Retry count exceeded limit(" + tcpParams.connectionRetryLimit + "); Stopped.");
@@ -771,6 +841,14 @@ public partial class CriProfiler
 					packetHeader = new TcpLogHeader(data);
 					try {
 						if (packetHeader.size > 0) {
+							if (this.doSaveLog && this.logStream != null) {
+								try {
+									this.logStream.Write(data, 0, data.Length);
+								} catch (Exception e) {
+									UnityEngine.Debug.LogError("[CRIWARE] Profiler: failed to write logs. Msg: " + e.Message);
+									this.doSaveLog = false;
+								}
+							}
 							this.Parser(data, packetHeader);
 						} /* if headerSize > 0 */
 					} catch (Exception ex) { /* Any parsing error */
@@ -809,18 +887,12 @@ public partial class CriProfiler
 	 *  Return 0 if there is no enough data to determine the size. 
 	 */
 	private int GetPacketSize(RingBuffer<byte> buffer) {
-		/* the size of the parameter "packet size" in bytes */
-		const int PARAM_SIZE = 4;
-
-		if (buffer == null) {
-			return 0;
-		}
-		if (buffer.Count < PARAM_SIZE) {
+		if (buffer == null || buffer.Count < DATA_LENGTH_PARAM_SIZE) {
 			return 0;
 		}
 
 		uint result = buffer[0];
-		for (int i = 1; i < PARAM_SIZE; ++i) {
+		for (int i = 1; i < DATA_LENGTH_PARAM_SIZE; ++i) {
 			result <<= 8;
 			result += buffer[i];
 		}
@@ -828,9 +900,86 @@ public partial class CriProfiler
 		return (int)result;
 	}
 
+	private int GetPacketSize(byte[] data, uint offset = 0) {
+		if (data == null || data.Length - offset < DATA_LENGTH_PARAM_SIZE) {
+			return 0;
+		}
+
+		uint result = data[offset];
+		for (int i = 0; i < DATA_LENGTH_PARAM_SIZE; i++) {
+			result <<= 8;
+			result += data[i + offset];
+		}
+
+		return (int)result;
+	}
+
+	public void LoadLogFromFile(string path) {
+		if (string.IsNullOrEmpty(path)) {
+			UnityEngine.Debug.LogError("[CRIWARE] Profiler: Log file path cannot be empty");
+		}
+
+		try {
+			using (var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read)) {
+				if (fileStream.CanRead) {
+					eventLogList.Clear();
+					byte[] reusedSizeData = new byte[DATA_LENGTH_PARAM_SIZE];
+					while (fileStream.Position + DATA_LENGTH_PARAM_SIZE < fileStream.Length) {
+						var read = fileStream.Read(reusedSizeData, 0, DATA_LENGTH_PARAM_SIZE);
+						/* roll back read position */
+						fileStream.Position -= read;
+						/* get actual data size */
+						var dataSize = GetPacketSize(reusedSizeData);
+						if (dataSize > 0) {
+							byte[] data = new byte[dataSize];
+							fileStream.Read(data, 0, dataSize);
+							this.LogParser(data);
+						} else {
+							UnityEngine.Debug.LogError("[CRIWARE] Profiler: Error while reading log");
+							break;
+						}
+					}
+				} else {
+					UnityEngine.Debug.LogError("[CRIWARE] Profiler: Log file cannot be read");
+				}
+			}
+		} catch (Exception e) {
+			UnityEngine.Debug.LogError("[CRIWARE] Profiler: Error while opening log: " + e.Message);
+		}
+	}
+
+	private void LogParser(byte[] data) {
+		var header = new TcpLogHeader(data);
+
+		switch ((TcpCommandId)header.command) {
+			case TcpCommandId.CRITCP_MAIL_SEND_LOG:
+				switch (GetLogFuncId(header.function_id)) {
+					case LogFuncId.LOG_COMMAND_ExPlaybackId:
+						this.AddEventLog(data);
+						break;
+					default:
+						break;
+				}
+				break;
+			case TcpCommandId.CRITCP_MAIL_MONITOR_ATOM_EXPLAYBACKINFO_PLAY_END:
+				switch (GetLogFuncId(header.function_id)) {
+					case LogFuncId.LOG_COMMAND_ExPlaybackInfo_FreeInfo:
+						this.AddEventLog(data);
+						break;
+					default:
+						break;
+				}
+				break;
+			default:
+				break;
+		}
+	}
+
 	private void Parser(byte[] data, TcpLogHeader header) {
 		int offset = 0;
+		int offset2 = 0;
 		int dataSize = 0;
+		int dataSize2 = 0;
 
 		UInt32 playbackId;
 		StreamTypes streamType;
@@ -845,6 +994,10 @@ public partial class CriProfiler
 
 		switch ((TcpCommandId)header.command) {
 			case TcpCommandId.CRITCP_MAIL_PREVIEW_CPU_LOAD:
+				this.timestamp = header.time;
+				if (this.timestampStart == 0) {
+					this.timestampStart = this.timestamp;
+				}
 				if (GetLogFuncId(header.function_id) == LogFuncId.LOG_COMMAND_CpuLoadAndNumUsedVoices) {
 					this.cpu_load = LoadBigEndianSingle(data, FindParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_CpuLoad, out offset));
 					this.num_used_voices = LoadBigEndianUInt32(data, GetNextParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_NumUsedVoices, ref offset));
@@ -857,6 +1010,10 @@ public partial class CriProfiler
 				}
 				break;
 			case TcpCommandId.CRITCP_MAIL_SEND_LOG:
+				this.timestamp = header.time;
+				if (this.timestampStart == 0) {
+					this.timestampStart = this.timestamp;
+				}
 				switch (GetLogFuncId(header.function_id)) {
 					case LogFuncId.LOG_COMMAND_LoudnessInfo:
 						this.loudness_momentary = LoadBigEndianSingle(data, FindParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_MomentaryValue, out offset));
@@ -930,16 +1087,20 @@ public partial class CriProfiler
 						break;
 					case LogFuncId.LOG_COMMAND_ExPlaybackId:
 						playbackId = LoadBigEndianUInt32(data, FindParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_ExPlaybackId, out offset));
-						dataSize = LoadBigEndianUInt16(data, FindParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_CueName, out offset));
-						if (dataSize > 1) {
+						dataSize = LoadBigEndianUInt16(data, FindParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_CueName, out offset)); /* cue name */
+                        dataSize2 = LoadBigEndianUInt16(data, FindParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_ExAcbName, out offset2)); /* cuesheet name */
+						if (dataSize > 1 && dataSize2 > 1) {
 							this.cuename_lastPlayed = System.Text.Encoding.Default.GetString(data, GetStrDataOffset(header, offset), dataSize);
+                            this.cuesheetName_lastPlayed = System.Text.Encoding.Default.GetString(data, GetStrDataOffset(header, offset2), dataSize2);
 							try {
 								lock (playbackHashtable) {
-									this.playbackHashtable.Add(playbackId, new PlaybackInfo(playbackId, cuename_lastPlayed, header.time));
+									this.playbackHashtable.Add(playbackId, new PlaybackInfo(playbackId, cuename_lastPlayed, cuesheetName_lastPlayed, header.time));
 								}
 							} catch (ArgumentException) {
 								/* Duplicated playback info received; Do nothing */
 							}
+							this.AddEventLog(data);
+							this.AddPlaybackToTimeline(new Playback(playbackId, header.time, true, cuename_lastPlayed, cuesheetName_lastPlayed));
 						} else {
 							this.cuename_lastPlayed = "";
 						}
@@ -964,11 +1125,20 @@ public partial class CriProfiler
 				}
 				break;
 			case TcpCommandId.CRITCP_MAIL_MONITOR_ATOM_EXPLAYBACKINFO_PLAY_END:
+				this.timestamp = header.time;
+				if (this.timestampStart == 0) {
+					this.timestampStart = this.timestamp;
+				}
 				switch (GetLogFuncId(header.function_id)) {
 					case LogFuncId.LOG_COMMAND_ExPlaybackInfo_FreeInfo:
 						playbackId = LoadBigEndianUInt32(data, FindParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_ExPlaybackId, out offset));
 						lock (playbackHashtable) {
-							playbackHashtable.Remove(playbackId);
+							if (playbackHashtable.ContainsKey(playbackId)) {
+								var info = playbackHashtable[playbackId] as PlaybackInfo;
+								this.AddEventLog(data);
+								this.AddPlaybackToTimeline(new Playback(playbackId, header.time, false, info.cueName, info.cueSheetName));
+								playbackHashtable.Remove(playbackId);
+							}
 						}
 						break;
 					default:
@@ -1003,8 +1173,50 @@ public partial class CriProfiler
 		*/
 	}
 
-	private LogFuncId GetLogFuncId(UInt16 rawId) {
+	private void AddEventLog(byte[] data) {
+		this.eventLogList.Add(data);
+	}
+
+	static private LogFuncId GetLogFuncId(UInt16 rawId) {
 		return (LogFuncId)(rawId - CriProfiler.logFuncBaseNum);
+	}
+
+	public string FilteredLog2String(byte[] data) {
+		if (data == null || data.Length < TcpLogHeader.properSize) { return string.Empty; }
+
+		var header = new TcpLogHeader(data);
+		var funcId = GetLogFuncId(header.function_id);
+		uint playbackId;
+		int dataSize, dataSize2, offset, offset2;
+		string str1, str2;
+
+		string output = string.Empty;
+		switch (funcId) {
+			case LogFuncId.LOG_COMMAND_ExPlaybackId:
+				playbackId = LoadBigEndianUInt32(data, FindParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_ExPlaybackId, out offset));
+				dataSize = LoadBigEndianUInt16(data, FindParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_CueName, out offset)); /* cue name */
+				dataSize2 = LoadBigEndianUInt16(data, FindParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_ExAcbName, out offset2)); /* cuesheet name */
+				str1 = System.Text.Encoding.Default.GetString(data, GetStrDataOffset(header, offset), dataSize);
+				str2 = System.Text.Encoding.Default.GetString(data, GetStrDataOffset(header, offset2), dataSize2);
+				output = MicroSec2String(header.time) + " | Start ID : " + playbackId + " | cuename : " + str1 + " | cuesheet : " + str2;
+				break;
+			case LogFuncId.LOG_COMMAND_ExPlaybackInfo_FreeInfo:
+				playbackId = LoadBigEndianUInt32(data, FindParamOffset(data, header, LogParamId.LOG_STRINGS_ITEM_ExPlaybackId, out offset));
+				output = MicroSec2String(header.time) + " | End ID : " + playbackId;
+				break;
+			default:
+				break;
+		}
+
+		return output;
+	}
+
+	static private string MicroSec2String(ulong microSec) {
+		ulong hour = microSec / 3600000000;
+		ulong min = (microSec % 3600000000) / 60000000;
+		ulong sec = (microSec % 60000000) / 1000000;
+		ulong msec = (microSec % 1000000) / 1000;
+		return string.Format("{0}:{1}:{2}.{3}", hour, min, sec, msec);
 	}
 
 	#region Methods for data offset calculation
@@ -1062,6 +1274,201 @@ public partial class CriProfiler
 	#endregion Methods for data offset calculation
 
 	#endregion Parser
+
+
+	#region Timeline
+
+	/* CueSheet - Cue - Playback Lane (multiple non-overlapping playback lists) - Timestamp (true = start, false = end) */
+
+	private void AddPlaybackToTimeline(Playback playback) {
+		CueSheetGroup group;
+		if (multiLaneTimeline.TryGetValue(playback.cuesheet, out group) == false) {
+			group = new CueSheetGroup(playback.cuesheet);
+			multiLaneTimeline.Add(playback.cuesheet, group);
+		}
+		group.AddPlayback(playback);
+	}
+
+	public Dictionary<string, CueSheetGroup> TimelineDataSlice {
+		get {
+			var output = new Dictionary<string, CueSheetGroup>();
+			foreach (var elem in multiLaneTimeline) {
+				output.Add(elem.Key, elem.Value.Clone());
+			}
+			return output;
+		}
+	}
+
+	public class CueSheetGroup : ICloneable {
+		public string name;
+		public Color cuesheetColor = Color.white;
+		public Dictionary<string, CueLane> cueLaneDict;
+
+		static private readonly Color baseColor = new Color(0.5412f, 1f, 0.3451f);
+
+		public CueSheetGroup(string name) {
+			this.name = name;
+			{/* set distinguishing color */
+				float h, s, v;
+				Color.RGBToHSV(baseColor, out h, out s, out v);
+				System.Random rand = new System.Random();
+				this.cuesheetColor = Color.HSVToRGB(rand.Next(0, 10000) / 10000f, s, v);
+			}
+			cueLaneDict = new Dictionary<string, CueLane>();
+		}
+
+		public CueSheetGroup(CueSheetGroup group) {
+			this.name = group.name;
+			this.cuesheetColor = group.cuesheetColor;
+			this.cueLaneDict = new Dictionary<string, CueLane>();
+			foreach (var elem in group.cueLaneDict) {
+				cueLaneDict.Add(elem.Key, elem.Value.Clone());
+			}
+		}
+		public CueSheetGroup Clone() { return new CueSheetGroup(this); }
+		object ICloneable.Clone() { return Clone(); }
+
+		public void AddPlayback(Playback playback) {
+			CueLane lane;
+			if (cueLaneDict.TryGetValue(playback.cuename, out lane) == false) {
+				lane = new CueLane(playback.cuename, playback.cuesheet);
+				cueLaneDict.Add(playback.cuename, lane);
+			}
+			lane.AddPlayback(playback);
+		}
+
+		public int TotalLaneCount {
+			get {
+				int cnt = 0;
+				foreach (var elem in cueLaneDict) {
+					cnt += elem.Value.playbackLaneList.Count;
+				}
+				return cnt;
+			}
+		}
+	}
+
+	public class CueLane : ICloneable {
+		public string name;
+		public string cuesheet;
+		public Color cueColor;
+		public List<PlaybackLane> playbackLaneList;
+
+		static private readonly Color baseColor = new Color(0.537f, 0.922f, 0.424f);
+		private Dictionary<uint, int> playingDict; /* <playback id, lane index>; wont be cloned */
+
+		public CueLane(string name, string cuesheet) {
+			this.name = name;
+			this.cuesheet = cuesheet;
+			{/* set distinguishing color */
+				float h, s, v;
+				Color.RGBToHSV(baseColor, out h, out s, out v);
+				System.Random rand = new System.Random();
+				this.cueColor = Color.HSVToRGB(rand.Next(0, 10000) / 10000f, s, v);
+			}
+			playbackLaneList = new List<PlaybackLane>();
+			playingDict = new Dictionary<uint, int>();
+		}
+
+		public CueLane(CueLane cuelane) {
+			this.name = cuelane.name;
+			this.cuesheet = cuelane.cuesheet;
+			this.cueColor = cuelane.cueColor;
+			this.playbackLaneList = new List<PlaybackLane>();
+			this.playbackLaneList.AddRange(cuelane.playbackLaneList.Select(i => i.Clone()));
+		}
+
+		public CueLane Clone() { return new CueLane(this); }
+		object ICloneable.Clone() { return Clone(); } 
+
+		public void AddPlayback(Playback playback) {
+			if (playback.isStart) { /* playback start */
+				bool added = false;
+				for (int i = 0; i < playbackLaneList.Count; ++i) {
+					if (playbackLaneList[i].isPlaying == false) {
+						if (playbackLaneList[i].AddPlayback(playback)) {
+							playingDict.Add(playback.id, i);
+							added = true;
+							break;
+						}
+					}
+				}
+				if (added == false) { /* no empty lane */
+					playbackLaneList.Add(new PlaybackLane());
+					if (playbackLaneList[playbackLaneList.Count - 1].AddPlayback(playback)) {
+						playingDict.Add(playback.id, playbackLaneList.Count - 1);
+					}
+				}
+			} else { /* playback end */
+				int laneId;
+				if (playingDict.TryGetValue(playback.id, out laneId)) {
+					playbackLaneList[laneId].AddPlayback(playback);
+					playingDict.Remove(playback.id);
+				}
+			}
+		}
+	}
+
+	public class PlaybackLane : ICloneable {
+		public List<Playback> playbackList;
+		private int balance;
+
+		public bool isConsistent {
+			get {
+				if (balance > 1 || balance < 0) {
+					return false;
+				}
+				return true;
+			}
+		}
+
+		public PlaybackLane() {
+			playbackList = new List<Playback>();
+			balance = 0;
+		}
+
+		public PlaybackLane(PlaybackLane playbackLane) {
+			this.playbackList = new List<Playback>(playbackLane.playbackList);
+			this.balance = playbackLane.balance;
+		}
+
+		public PlaybackLane Clone() { return new PlaybackLane(this); }
+		object ICloneable.Clone() { return Clone(); }
+
+		public bool AddPlayback(Playback playback) {
+			if (playbackList.Count > 0 &&
+				(playbackList[playbackList.Count - 1].timestamp > playback.timestamp ||
+				playbackList[playbackList.Count - 1].isStart == playback.isStart)) {
+				UnityEngine.Debug.LogError("[CRIWARE] Profiler internal: playback timestamp order error");
+				return false;
+			}
+			playbackList.Add(playback);
+			balance += playback.isStart ? 1 : -1;
+			return true;
+		}
+
+		public bool isPlaying {
+			get {
+				return playbackList[playbackList.Count - 1].isStart;
+			}
+		}
+	}
+
+	public struct Playback {
+		public uint id;
+		public ulong timestamp;
+		public bool isStart;
+		public string cuename;
+		public string cuesheet;
+		public Playback(uint id, ulong timestamp, bool isStart, string cuename, string cuesheet) {
+			this.id = id;
+			this.timestamp = timestamp;
+			this.isStart = isStart;
+			this.cuename = cuename;
+			this.cuesheet = cuesheet;
+		}
+	}
+	#endregion
 }
 
 #endif

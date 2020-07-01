@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
     public int continueNum=0;
     public int coinNum = 0;
 
+    public string sceneRestart;
+
     private void Awake()
     {
         if(instance==null)

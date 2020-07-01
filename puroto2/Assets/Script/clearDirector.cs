@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class clearDirector : MonoBehaviour
 {
     public GameObject Scenes;
-    public GameObject[] Scene = new GameObject[3];
+    public GameObject[] Scene = new GameObject[2];
     private int sceneSelect = 0;
 
     // Start is called before the first frame update
@@ -18,7 +18,7 @@ public class clearDirector : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.RightArrow) && sceneSelect < 2)
+        if (Input.GetKeyDown(KeyCode.RightArrow) && sceneSelect < 1)
         {
             sceneSelect += 1;
         }
@@ -26,7 +26,7 @@ public class clearDirector : MonoBehaviour
         {
             sceneSelect -= 1;
         }
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 2; i++)
         {
             if (i == sceneSelect)
             {
@@ -45,12 +45,9 @@ public class clearDirector : MonoBehaviour
             switch (sceneSelect)
             {
                 case 0:
-                    SceneManager.LoadScene("gameScene1");
+                    SceneManager.LoadScene(GameManager.instance.sceneRestart);
                     break;
                 case 1:
-                    SceneManager.LoadScene("StageSelect");
-                    break;
-                case 2:
                     SceneManager.LoadScene("title");
                     break;
             }

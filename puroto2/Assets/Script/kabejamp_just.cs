@@ -12,11 +12,14 @@ public class kabejamp_just : MonoBehaviour
     public float j;
     public bool JUST = false;
 
+    private CriAtomSource wallTouchSound;//壁ジャンプ時の音
+
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.Find("Player").GetComponent<Player>();
         Prig = GameObject.Find("Player").GetComponent<Rigidbody>();
+        wallTouchSound = GameObject.Find("Shalf_wallTouch(CriAtomSource)").GetComponent<CriAtomSource>();
     }
 
     // Update is called once per frame
@@ -56,6 +59,7 @@ public class kabejamp_just : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 Prig.AddForce(Player.transform.up * (player.jumpForce + j), ForceMode.Impulse);
+                wallTouchSound.Play();
                 if (player.player_rotation == false)
                 {
                     player.player_rotation = true;

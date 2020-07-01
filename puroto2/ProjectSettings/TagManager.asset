@@ -12,6 +12,7 @@ TagManager:
   - player_wall
   - glass
   - wall
+  - stage
   layers:
   - Default
   - TransparentFX

@@ -18,9 +18,12 @@ using UnityEngine;
 
 /**
  * <summary>ACFデータ</summary>
- * \par 説明:
+ * <remarks>
+ * <para header='説明'>
  * CRI Atom Craftで設定したプロジェクト設定を管理するクラスです。<br/>
  * ACFファイルに記述された各種情報を取得します。
+ * </para>
+ * </remarks>
  */
 public class CriAtomExAcf
 {
@@ -28,10 +31,13 @@ public class CriAtomExAcf
 
     /**
      * <summary>DSPバス設定の情報取得用構造体</summary>
-     * \par 説明:
+     * <remarks>
+     * <para header='説明'>
      * DSPバス設定の情報を取得するための構造体です。<br/>
      * ::CriAtomExAcf::GetDspSettingInformation 関数に引数として渡します。<br/>
-     * \sa CriAtomExAcf::GetDspSettingInformation
+     * </para>
+     * </remarks>
+     * <seealso cref='CriAtomExAcf::GetDspSettingInformation'/>
      */
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public struct AcfDspSettingInfo
@@ -93,12 +99,15 @@ public class CriAtomExAcf
     }
 
     /**
-    * <summary>DSPバス設定スナップショットの情報取得用構造体</summary>
-    * \par 説明:
-    * DSPバス設定のスナップショット情報を取得するための構造体です。<br>
-    * ::CriAtomExAcf::GetDspSettingSnapshotInformation 関数に引数として渡します。<br/>
-    * \sa CriAtomExAcf::GetDspSettingSnapshotInformation
-    */
+	 * <summary>DSPバス設定スナップショットの情報取得用構造体</summary>
+	 * <remarks>
+	 * <para header='説明'>
+	 * DSPバス設定のスナップショット情報を取得するための構造体です。<br/>
+	 * ::CriAtomExAcf::GetDspSettingSnapshotInformation 関数に引数として渡します。<br/>
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExAcf::GetDspSettingSnapshotInformation'/>
+	 */
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public struct AcfDspSettingSnapshotInfo
     {
@@ -161,12 +170,15 @@ public class CriAtomExAcf
     }
 
     /**
-    * <summary>DSPバス設定情報取得用構造体</summary>
-    * \par 説明:
-    * DSPバス設定情報を取得するための構造体です。<br>
-    * ::CriAtomExAcf::GetDspBusInformation 関数に引数として渡します。<br/>
-    * \sa CriAtomExAcf::GetDspBusInformation
-    */
+	 * <summary>DSPバス設定情報取得用構造体</summary>
+	 * <remarks>
+	 * <para header='説明'>
+	 * DSPバス設定情報を取得するための構造体です。<br/>
+	 * ::CriAtomExAcf::GetDspBusInformation 関数に引数として渡します。<br/>
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExAcf::GetDspBusInformation'/>
+	 */
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public struct AcfDspBusInfo
     {
@@ -232,9 +244,9 @@ public class CriAtomExAcf
     }
 
     /**
-    * <summary>DSPバスリンクタイプ</summary>
-    * \sa CriAtomExAcf::AcfDspBusLinkInfo
-    */
+	 * <summary>DSPバスリンクタイプ</summary>
+	 * <seealso cref="CriAtomExAcf::AcfDspBusLinkInfo"/>
+	 */
     public enum AcfDspBusLinkType : uint
     {
         preVolume = 0,      /**< プレボリュームタイプ       */
@@ -243,12 +255,15 @@ public class CriAtomExAcf
     }
 
     /**
-    * <summary>DSPバスリンク情報取得用構造体</summary>
-    * \par 説明:
-    * DSPバスリンク情報を取得するための構造体です。<br>
-    * ::CriAtomExAcf::GetDspBusLinkInformation 関数に引数として渡します。<br/>
-    * \sa CriAtomExAcf::GetDspBusLinkInformation
-    */
+	 * <summary>DSPバスリンク情報取得用構造体</summary>
+	 * <remarks>
+	 * <para header='説明'>
+	 * DSPバスリンク情報を取得するための構造体です。<br/>
+	 * ::CriAtomExAcf::GetDspBusLinkInformation 関数に引数として渡します。<br/>
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExAcf::GetDspBusLinkInformation'/>
+	 */
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public struct AcfDspBusLinkInfo
     {
@@ -269,12 +284,15 @@ public class CriAtomExAcf
     }
 
     /**
-    * <summary>カテゴリ情報取得用構造体</summary>
-    * \par 説明:
-    * カテゴリ情報を取得するための構造体です。<br>
-    * ::CriAtomExAcf::GetCategoryInfo 関数に引数として渡します。<br/>
-    * \sa CriAtomExAcf::GetCategoryInfo
-    */
+	 * <summary>カテゴリ情報取得用構造体</summary>
+	 * <remarks>
+	 * <para header='説明'>
+	 * カテゴリ情報を取得するための構造体です。<br/>
+	 * ::CriAtomExAcf::GetCategoryInfo 関数に引数として渡します。<br/>
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExAcf::GetCategoryInfo'/>
+	 */
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public struct CategoryInfo
     {
@@ -307,9 +325,9 @@ public class CriAtomExAcf
     }
 
     /**
-    * <summary>Aisacタイプ</summary>
-    * \sa CriAtomExAcf::GlobalAisacInfo
-    */
+	 * <summary>Aisacタイプ</summary>
+	 * <seealso cref="CriAtomExAcf::GlobalAisacInfo"/>
+	 */
     public enum AcfAisacType : uint
     {
         normal = 0,             /*JP< ノーマルタイプ                */
@@ -317,12 +335,15 @@ public class CriAtomExAcf
     }
 
     /**
-    * <summary>Aisac情報取得用構造体</summary>
-    * \par 説明:
-    * Global Aisac情報を取得するための構造体です。<br>
-    * ::CriAtomExAcf::GetGlobalAisacInfo 関数に引数として渡します。<br/>
-    * \sa CriAtomExAcf::GetGlobalAisacInfo
-    */
+	 * <summary>Aisac情報取得用構造体</summary>
+	 * <remarks>
+	 * <para header='説明'>
+	 * Global Aisac情報を取得するための構造体です。<br/>
+	 * ::CriAtomExAcf::GetGlobalAisacInfo 関数に引数として渡します。<br/>
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExAcf::GetGlobalAisacInfo'/>
+	 */
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public struct GlobalAisacInfo
     {
@@ -361,25 +382,25 @@ public class CriAtomExAcf
     }
 
     /**
-    * <summary>Aisacグラフタイプ</summary>
-    * \sa CriAtomExAcf::AisacGraphInfo
-    */
-    public enum AisacGraphType : uint
+	 * <summary>Aisacグラフタイプ</summary>
+	 * <seealso cref="CriAtomExAcf::AisacGraphInfo"/>
+	 */
+    public enum AisacGraphType : int
     {
-        none = 0,               /**< 未使用                                    　*/
-        volume,                 /**< ボリューム                                　*/
-        pitch,                  /**< ピッチ                                    　*/
-        bandpassHigh,           /**< バンドパスフィルタの高域カットオフ周波数  　*/
-        bandpassLow,            /**< バンドパスフィルタの低域カットオフ周波数  　*/
-        biquadFreq,             /**< バイクアッドフィルタの周波数              　*/
-        biquadQ,                /**< バイクアッドフィルタのQ値                 　*/
-        busSend0,               /**< バスセンドレベル0                         　*/
-        busSend1,               /**< バスセンドレベル1                         　*/
-        busSend2,               /**< バスセンドレベル2                         　*/
-        busSend3,               /**< バスセンドレベル3                         　*/
-        busSend4,               /**< バスセンドレベル4                         　*/
-        busSend5,               /**< バスセンドレベル5                         　*/
-        busSend6,               /**< バスセンドレベル6                         　*/
+        none = 0,               /**< 未使用                                      */
+        volume,                 /**< ボリューム                                  */
+        pitch,                  /**< ピッチ                                      */
+        bandpassHigh,           /**< バンドパスフィルタの高域カットオフ周波数    */
+        bandpassLow,            /**< バンドパスフィルタの低域カットオフ周波数    */
+        biquadFreq,             /**< バイクアッドフィルタの周波数                */
+        biquadQ,                /**< バイクアッドフィルタのQ値                   */
+        busSend0,               /**< バスセンドレベル0                           */
+        busSend1,               /**< バスセンドレベル1                           */
+        busSend2,               /**< バスセンドレベル2                           */
+        busSend3,               /**< バスセンドレベル3                           */
+        busSend4,               /**< バスセンドレベル4                           */
+        busSend5,               /**< バスセンドレベル5                           */
+        busSend6,               /**< バスセンドレベル6                           */
         busSend7,               /**< バスセンドレベル7                           */
         pan3dAngel,             /**< パンニング3D角度                            */
         pan3dVolume,            /**< パンニング3Dボリューム                      */
@@ -422,12 +443,15 @@ public class CriAtomExAcf
     }
 
     /**
-    * <summary>Aisac Graph情報取得用構造体</summary>
-    * \par 説明:
-    * Global Aisac Graph情報を取得するための構造体です。<br>
-    * ::CriAtomExAcf::GetGlobalAisacGraphInfo 関数に引数として渡します。<br/>
-    * \sa CriAtomExAcf::GetGlobalAisacGraphInfo
-    */
+	 * <summary>Aisac Graph情報取得用構造体</summary>
+	 * <remarks>
+	 * <para header='説明'>
+	 * Global Aisac Graph情報を取得するための構造体です。<br/>
+	 * ::CriAtomExAcf::GetGlobalAisacGraphInfo 関数に引数として渡します。<br/>
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExAcf::GetGlobalAisacGraphInfo'/>
+	 */
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public struct AisacGraphInfo
     {
@@ -435,16 +459,19 @@ public class CriAtomExAcf
 
         public AisacGraphInfo(byte[] data, int startIndex)
         {
-            this.type = (AisacGraphType)Enum.ToObject(typeof(AisacGraphType), BitConverter.ToUInt32(data, startIndex + 0));
+            this.type = (AisacGraphType)Enum.ToObject(typeof(AisacGraphType), BitConverter.ToInt32(data, startIndex + 0));
         }
     }
 
     /**
-    * <summary>文字コード</summary>
-    * \par 説明:
-    * 文字コード（文字符号化方式）を表します。<br>
-    * \sa CriAtomExAcf::AcfInfo
-    */
+	 * <summary>文字コード</summary>
+	 * <remarks>
+	 * <para header='説明'>
+	 * 文字コード（文字符号化方式）を表します。<br/>
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExAcf::AcfInfo'/>
+	 */
     public enum CharacterEncoding : uint
     {
         utf8 = 0,  /**< UTF-8       */
@@ -452,12 +479,15 @@ public class CriAtomExAcf
     }
 
     /**
-    * <summary>ACF情報</summary>
-    * \par 説明:
-    * ACFデータの詳細情報です。<br>
-    * ::CriAtomExAcf::GetAcfInfo 関数に引数として渡します。<br/>
-    * \sa CriAtomExAcf::GetAcfInfo
-    */
+	 * <summary>ACF情報</summary>
+	 * <remarks>
+	 * <para header='説明'>
+	 * ACFデータの詳細情報です。<br/>
+	 * ::CriAtomExAcf::GetAcfInfo 関数に引数として渡します。<br/>
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExAcf::GetAcfInfo'/>
+	 */
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public struct AcfInfo
     {
@@ -517,12 +547,15 @@ public class CriAtomExAcf
     }
 
     /**
-    * <summary>セレクタ情報取得用構造体</summary>
-    * \par 説明:
-    * セレクタ情報を取得するための構造体です。<br>
-    * ::CriAtomExAcf::GetSelectorInfo 関数に引数として渡します。<br/>
-    * \sa CriAtomExAcf::GetSelectorInfo
-    */
+	 * <summary>セレクタ情報取得用構造体</summary>
+	 * <remarks>
+	 * <para header='説明'>
+	 * セレクタ情報を取得するための構造体です。<br/>
+	 * ::CriAtomExAcf::GetSelectorInfo 関数に引数として渡します。<br/>
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExAcf::GetSelectorInfo'/>
+	 */
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public struct SelectorInfo
     {
@@ -552,12 +585,15 @@ public class CriAtomExAcf
     }
 
     /**
-    * <summary>セレクタラベル情報取得用構造体</summary>
-    * \par 説明:
-    * セレクタラベル情報を取得するための構造体です。<br>
-    * ::CriAtomExAcf::GetSelectorLabelInfo 関数に引数として渡します。<br/>
-    * \sa CriAtomExAcf::GetSelectorLabelInfo
-    */
+	 * <summary>セレクタラベル情報取得用構造体</summary>
+	 * <remarks>
+	 * <para header='説明'>
+	 * セレクタラベル情報を取得するための構造体です。<br/>
+	 * ::CriAtomExAcf::GetSelectorLabelInfo 関数に引数として渡します。<br/>
+	 * </para>
+	 * </remarks>
+	 * <seealso cref='CriAtomExAcf::GetSelectorLabelInfo'/>
+	 */
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public struct SelectorLabelInfo
     {
@@ -586,9 +622,12 @@ public class CriAtomExAcf
     /**
      * <summary>AISACコントロール数の取得</summary>
      * <returns>AISACコントロール数</returns>
-     * \par 説明:
-     * 登録されたACFに含まれるAISACコントロールの数を取得します。<br>
+     * <remarks>
+     * <para header='説明'>
+     * 登録されたACFに含まれるAISACコントロールの数を取得します。<br/>
      * ACFが登録されていない場合、-1が返ります。
+     * </para>
+     * </remarks>
      */
     public static int GetNumAisacControls()
     {
@@ -597,12 +636,15 @@ public class CriAtomExAcf
 
     /**
      * <summary>AISACコントロール情報の取得</summary>
-     * <param name="index">AISACコントロールインデックス</param>
-	 * <param name="info">AISACコントロール情報</param>
+     * <param name='index'>AISACコントロールインデックス</param>
+     * <param name='info'>AISACコントロール情報</param>
      * <returns>情報が取得できたかどうか？（取得できた：TRUE／取得できない：FALSE）</returns>
-     * \par 説明:
-     * AISACコントロールインデックスからAISACコントロール情報を取得します。<br>
+     * <remarks>
+     * <para header='説明'>
+     * AISACコントロールインデックスからAISACコントロール情報を取得します。<br/>
      * 指定したインデックスのAISACコントロールが存在しない場合、FALSEが返ります。
+     * </para>
+     * </remarks>
      */
     public static bool GetAisacControlInfo(ushort index, out CriAtomEx.AisacControlInfo info)
     {
@@ -617,9 +659,12 @@ public class CriAtomExAcf
     /**
      * <summary>DSPバス設定数の取得</summary>
      * <returns>DSPバス設定数</returns>
-     * \par 説明:
-     * ライブラリに登録されたACFデータに含まれるDSPバス設定の数を取得します。<br>
-     * ACFデータが登録されていない場合、本関数は -1 を返します。<br>
+     * <remarks>
+     * <para header='説明'>
+     * ライブラリに登録されたACFデータに含まれるDSPバス設定の数を取得します。<br/>
+     * ACFデータが登録されていない場合、本関数は -1 を返します。<br/>
+     * </para>
+     * </remarks>
      */
     public static int GetNumDspSettings()
     {
@@ -628,12 +673,15 @@ public class CriAtomExAcf
 
     /**
      * <summary>DSPバス設定情報の取得</summary>
-     * <param name="name">セッティング名</param>
-     * <param name="info">セッティング情報</param>
+     * <param name='name'>セッティング名</param>
+     * <param name='info'>セッティング情報</param>
      * <returns>情報が取得できたかどうか？（取得できた：TRUE／取得できない：FALSE）</returns>
-     * \par 説明:
-     * セッティング名を指定してセッティング情報を取得します。<br>
-     * 指定したセッティング名のDsp settingが存在しない場合、FALSEが返ります。<br>
+     * <remarks>
+     * <para header='説明'>
+     * セッティング名を指定してセッティング情報を取得します。<br/>
+     * 指定したセッティング名のDsp settingが存在しない場合、FALSEが返ります。<br/>
+     * </para>
+     * </remarks>
      */
     public static bool GetDspSettingInformation(string name, out AcfDspSettingInfo info)
     {
@@ -647,14 +695,17 @@ public class CriAtomExAcf
 
     /**
      * <summary>DSPバス設定スナップショット情報の取得</summary>
-     * <param name="index">スナップショットインデックス</param>
-     * <param name="info">スナップショット情報</param>
+     * <param name='index'>スナップショットインデックス</param>
+     * <param name='info'>スナップショット情報</param>
      * <returns>情報が取得できたかどうか？（取得できた：TRUE／取得できない：FALSE）</returns>
-     * \par 説明:
-     * スナップショットインデックスを指定してスナップショット情報を取得します。<br>
-     * 指定したセッティング名のスナップショットが存在しない場合、FALSEが返ります。<br>
+     * <remarks>
+     * <para header='説明'>
+     * スナップショットインデックスを指定してスナップショット情報を取得します。<br/>
+     * 指定したセッティング名のスナップショットが存在しない場合、FALSEが返ります。<br/>
      * スナップショットインデックスは親となるDSPバス設定情報の ::CriAtomExAcfDspSettingInfo 構造体内の
      * snapshotStartIndexメンバとnumSnapshotsメンバを元に適切な値を算出してください。
+     * </para>
+     * </remarks>
      */
     public static bool GetDspSettingSnapshotInformation(ushort index, out AcfDspSettingSnapshotInfo info)
     {
@@ -668,12 +719,15 @@ public class CriAtomExAcf
 
     /**
      * <summary>DSPバスの取得</summary>
-     * <param name="index">バスインデックス</param>
-     * <param name="info">バス情報</param>
+     * <param name='index'>バスインデックス</param>
+     * <param name='info'>バス情報</param>
      * <returns>情報が取得できたかどうか？（取得できた：TRUE／取得できない：FALSE）</returns>
-     * \par 説明:
-     * インデックスを指定してDSPバス情報を取得します。<br>
-     * 指定したインデックス名のDSPバスが存在しない場合、FALSEが返ります。<br>
+     * <remarks>
+     * <para header='説明'>
+     * インデックスを指定してDSPバス情報を取得します。<br/>
+     * 指定したインデックス名のDSPバスが存在しない場合、FALSEが返ります。<br/>
+     * </para>
+     * </remarks>
      */
     public static bool GetDspBusInformation(ushort index, out AcfDspBusInfo info)
     {
@@ -687,12 +741,15 @@ public class CriAtomExAcf
 
     /**
      * <summary>DSPバスリンクの取得</summary>
-     * <param name="index">DSPバスリンクインデックス</param>
-     * <param name="info">DSPバスリンク情報</param>
+     * <param name='index'>DSPバスリンクインデックス</param>
+     * <param name='info'>DSPバスリンク情報</param>
      * <returns>情報が取得できたかどうか？（取得できた：TRUE／取得できない：FALSE）</returns>
-     * \par 説明:
-     * インデックスを指定してバスリンク情報を取得します。<br>
-     * 指定したインデックス名のDSPバスリンクが存在しない場合、FALSEが返ります。<br>
+     * <remarks>
+     * <para header='説明'>
+     * インデックスを指定してバスリンク情報を取得します。<br/>
+     * 指定したインデックス名のDSPバスリンクが存在しない場合、FALSEが返ります。<br/>
+     * </para>
+     * </remarks>
      */
     public static bool GetDspBusLinkInformation(ushort index, out AcfDspBusLinkInfo info)
     {
@@ -707,8 +764,11 @@ public class CriAtomExAcf
     /**
      * <summary>カテゴリ数の取得</summary>
      * <returns>カテゴリ数</returns>
-     * \par 説明:
+     * <remarks>
+     * <para header='説明'>
      * 登録されたACFに含まれるカテゴリの数を取得します。
+     * </para>
+     * </remarks>
      */
     public static int GetNumCategories()
     {
@@ -718,8 +778,11 @@ public class CriAtomExAcf
     /**
      * <summary>再生毎カテゴリ参照数の取得</summary>
      * <returns>再生毎カテゴリ参照数</returns>
-     * \par 説明:
+     * <remarks>
+     * <para header='説明'>
      * 登録されたACFに含まれる再生毎カテゴリ参照数を取得します。
+     * </para>
+     * </remarks>
      */
     public static int GetNumCategoriesPerPlayback()
     {
@@ -728,12 +791,15 @@ public class CriAtomExAcf
 
     /**
      * <summary>カテゴリ情報の取得（インデックス指定）</summary>
-     * <param name="index">カテゴリインデックス</param>
-     * <param name="info">カテゴリ情報</param>
+     * <param name='index'>カテゴリインデックス</param>
+     * <param name='info'>カテゴリ情報</param>
      * <returns>情報が取得できたかどうか？（取得できた：TRUE／取得できない：FALSE）</returns>
-     * \par 説明:
-     * カテゴリインデックスからカテゴリ情報を取得します。<br>
+     * <remarks>
+     * <para header='説明'>
+     * カテゴリインデックスからカテゴリ情報を取得します。<br/>
      * 指定したインデックスのカテゴリが存在しない場合、FALSEが返ります。
+     * </para>
+     * </remarks>
      */
     public static bool GetCategoryInfoByIndex(ushort index, out CategoryInfo info)
     {
@@ -747,12 +813,15 @@ public class CriAtomExAcf
 
     /**
      * <summary>カテゴリ情報の取得（カテゴリ名指定）</summary>
-     * <param name="name">カテゴリ名指定</param>
-     * <param name="info">カテゴリ情報</param>
+     * <param name='name'>カテゴリ名指定</param>
+     * <param name='info'>カテゴリ情報</param>
      * <returns>情報が取得できたかどうか？（取得できた：TRUE／取得できない：FALSE）</returns>
-     * \par 説明:
-     * カテゴリ名からカテゴリ情報を取得します。<br>
+     * <remarks>
+     * <para header='説明'>
+     * カテゴリ名からカテゴリ情報を取得します。<br/>
      * 指定したカテゴリ名のカテゴリが存在しない場合、FALSEが返ります。
+     * </para>
+     * </remarks>
      */
     public static bool GetCategoryInfoByName(string name, out CategoryInfo info)
     {
@@ -766,12 +835,15 @@ public class CriAtomExAcf
 
     /**
      * <summary>カテゴリ情報の取得（カテゴリID指定）</summary>
-     * <param name="id">カテゴリID</param>
-     * <param name="info">カテゴリ情報</param>
+     * <param name='id'>カテゴリID</param>
+     * <param name='info'>カテゴリ情報</param>
      * <returns>情報が取得できたかどうか？（取得できた：TRUE／取得できない：FALSE）</returns>
-     * \par 説明:
-     * カテゴリIDからカテゴリ情報を取得します。<br>
+     * <remarks>
+     * <para header='説明'>
+     * カテゴリIDからカテゴリ情報を取得します。<br/>
      * 指定したカテゴリIDのカテゴリが存在しない場合、FALSEが返ります。
+     * </para>
+     * </remarks>
      */
     public static bool GetCategoryInfoById(uint id, out CategoryInfo info)
     {
@@ -786,8 +858,11 @@ public class CriAtomExAcf
     /**
      * <summary>Global Aisac数の取得</summary>
      * <returns>Global Aisac数</returns>
-     * \par 説明:
+     * <remarks>
+     * <para header='説明'>
      * 登録されたACFに含まれるGlobal Aisacの数を取得します。
+     * </para>
+     * </remarks>
      */
     public static int GetNumGlobalAisacs()
     {
@@ -796,12 +871,15 @@ public class CriAtomExAcf
 
     /**
      * <summary>Global Aisac情報の取得（インデックス指定）</summary>
-     * <param name="index">Global Aisacインデックス</param>
-     * <param name="info">Global Aisac情報</param>
+     * <param name='index'>Global Aisacインデックス</param>
+     * <param name='info'>Global Aisac情報</param>
      * <returns>情報が取得できたかどうか？（取得できた：TRUE／取得できない：FALSE）</returns>
-     * \par 説明:
-     * Global AisacインデックスからAisac情報を取得します。<br>
+     * <remarks>
+     * <para header='説明'>
+     * Global AisacインデックスからAisac情報を取得します。<br/>
      * 指定したインデックスのGlobal Aisacが存在しない場合、FALSEが返ります。
+     * </para>
+     * </remarks>
      */
     public static bool GetGlobalAisacInfoByIndex(ushort index, out GlobalAisacInfo info)
     {
@@ -815,12 +893,15 @@ public class CriAtomExAcf
 
     /**
      * <summary>Global Aisac情報の取得（名前指定）</summary>
-     * <param name="name">Global Aisac名</param>
-     * <param name="info">Global Aisac情報</param>
+     * <param name='name'>Global Aisac名</param>
+     * <param name='info'>Global Aisac情報</param>
      * <returns>情報が取得できたかどうか？（取得できた：TRUE／取得できない：FALSE）</returns>
-     * \par 説明:
-     * Global Aisac名からAisac情報を取得します。<br>
+     * <remarks>
+     * <para header='説明'>
+     * Global Aisac名からAisac情報を取得します。<br/>
      * 指定した名前のGlobal Aisacが存在しない場合、FALSEが返ります。
+     * </para>
+     * </remarks>
      */
     public static bool GetGlobalAisacInfoByName(string name, out GlobalAisacInfo info)
     {
@@ -834,13 +915,16 @@ public class CriAtomExAcf
 
     /**
      * <summary>Global Aisac Graph情報の取得</summary>
-     * <param name="aisacInfo">Global Aisac情報</param>
-     * <param name="graphIndex">Global Aisac graphインデックス</param>
-     * <param name="info">Aisac graph情報</param>
+     * <param name='aisacInfo'>Global Aisac情報</param>
+     * <param name='graphIndex'>Global Aisac graphインデックス</param>
+     * <param name='info'>Aisac graph情報</param>
      * <returns>情報が取得できたかどうか？（取得できた：TRUE／取得できない：FALSE）</returns>
-     * \par 説明:
-     * Global Aisac情報とgraphインデックスからgraph情報を取得します。<br>
+     * <remarks>
+     * <para header='説明'>
+     * Global Aisac情報とgraphインデックスからgraph情報を取得します。<br/>
      * 指定したインデックスのGlobal Aisacが存在しない場合、FALSEが返ります。
+     * </para>
+     * </remarks>
      */
     public static bool GetGlobalAisacGraphInfo(GlobalAisacInfo aisacInfo, ushort graphIndex, out AisacGraphInfo graphInfo)
     {
@@ -856,29 +940,35 @@ public class CriAtomExAcf
 
     /**
      * <summary>Global Aisac値の取得</summary>
-     * <param name="aisacInfo">Global Aisac情報</param>
-     * <param name="control">AISACコントロール値</param>
-     * <param name="type">グラフタイプ</param>
-     * <param name="value">AISAC値</param>
+     * <param name='aisacInfo'>Global Aisac情報</param>
+     * <param name='control'>AISACコントロール値</param>
+     * <param name='type'>グラフタイプ</param>
+     * <param name='value'>AISAC値</param>
      * <returns>情報が取得できたかどうか？（取得できた：TRUE／取得できない：FALSE）</returns>
-     * \par 説明:
-     * Global Aisac情報、コントロール値、グラフタイプを指定してAisac値を取得します。<br>
+     * <remarks>
+     * <para header='説明'>
+     * Global Aisac情報、コントロール値、グラフタイプを指定してAisac値を取得します。<br/>
      * 指定したインデックスのGlobal Aisacが存在しない場合やグラフが存在しない場合は、FALSEが返ります。
+     * </para>
+     * </remarks>
      */
-    public static bool GetGlobalAisacValue(GlobalAisacInfo aisacInfo, float control, AisacGraphType type, float value)
+    public static bool GetGlobalAisacValue(GlobalAisacInfo aisacInfo, float control, AisacGraphType type, out float value)
     {
         IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(GlobalAisacInfo)));
         Marshal.StructureToPtr(aisacInfo, ptr, false);
-        return criAtomExAcf_GetGlobalAisacValue(ptr, control, type, value);
+        return criAtomExAcf_GetGlobalAisacValue(ptr, control, type, out value);
     }
 
     /**
      * <summary>ACF情報の取得</summary>
-     * <param name="acfInfo">ACF情報</param>
+     * <param name='acfInfo'>ACF情報</param>
      * <returns>情報が取得できたかどうか？（取得できた：TRUE／取得できない：FALSE）</returns>
-     * \par 説明:
-     * ライブラリに登録されたACFデータの各種情報を取得します。<br>
+     * <remarks>
+     * <para header='説明'>
+     * ライブラリに登録されたACFデータの各種情報を取得します。<br/>
      * ACF情報の取得に失敗した場合、FALSEが返ります。
+     * </para>
+     * </remarks>
      */
     public static bool GetAcfInfo(out AcfInfo acfInfo)
     {
@@ -893,8 +983,11 @@ public class CriAtomExAcf
     /**
      * <summary>セレクタ数の取得</summary>
      * <returns>セレクタ数</returns>
-     * \par 説明:
+     * <remarks>
+     * <para header='説明'>
      * 登録されたACFに含まれるセレクタの数を取得します。
+     * </para>
+     * </remarks>
      */
     public static int GetNumSelectors()
     {
@@ -903,12 +996,15 @@ public class CriAtomExAcf
 
     /**
      * <summary>セレクタ情報の取得（インデックス指定）</summary>
-     * <param name="index">セレクタインデックス</param>
-     * <param name="info">セレクタ情報</param>
+     * <param name='index'>セレクタインデックス</param>
+     * <param name='info'>セレクタ情報</param>
      * <returns>情報が取得できたかどうか？（取得できた：TRUE／取得できない：FALSE）</returns>
-     * \par 説明:
-     * セレクタインデックスからセレクタ情報を取得します。<br>
+     * <remarks>
+     * <para header='説明'>
+     * セレクタインデックスからセレクタ情報を取得します。<br/>
      * 指定したインデックスのセレクタが存在しない場合、FALSEが返ります。
+     * </para>
+     * </remarks>
      */
     public static bool GetSelectorInfoByIndex(ushort index, out SelectorInfo info)
     {
@@ -922,12 +1018,15 @@ public class CriAtomExAcf
 
     /**
      * <summary>セレクタ情報の取得（名前指定）</summary>
-     * <param name="name">セレクタ名</param>
-     * <param name="info">セレクタ情報</param>
+     * <param name='name'>セレクタ名</param>
+     * <param name='info'>セレクタ情報</param>
      * <returns>情報が取得できたかどうか？（取得できた：TRUE／取得できない：FALSE）</returns>
-     * \par 説明:
-     * セレクタ名からセレクタ情報を取得します。<br>
+     * <remarks>
+     * <para header='説明'>
+     * セレクタ名からセレクタ情報を取得します。<br/>
      * 指定した名前のセレクタが存在しない場合、FALSEが返ります。
+     * </para>
+     * </remarks>
      */
     public static bool GetSelectorInfoByName(string name, out SelectorInfo info)
     {
@@ -941,13 +1040,16 @@ public class CriAtomExAcf
 
     /**
      * <summary>セレクタラベル情報の取得</summary>
-     * <param name="selectorInfo">セレクタ情報</param>
-     * <param name="labelIndex">ラベルインデックス</param>
-     * <param name="info">セレクタラベル情報</param>
+     * <param name='selectorInfo'>セレクタ情報</param>
+     * <param name='labelIndex'>ラベルインデックス</param>
+     * <param name='info'>セレクタラベル情報</param>
      * <returns>情報が取得できたかどうか？（取得できた：TRUE／取得できない：FALSE）</returns>
-     * \par 説明:
-     * セレクタ情報とセレクタラベルインデックスからセレクタラベル情報を取得します。<br>
+     * <remarks>
+     * <para header='説明'>
+     * セレクタ情報とセレクタラベルインデックスからセレクタラベル情報を取得します。<br/>
      * 指定したインデックスのセレクタラベルが存在しない場合、FALSEが返ります。
+     * </para>
+     * </remarks>
      */
     public static bool GetSelectorLabelInfo(SelectorInfo selectorInfo, ushort labelIndex, out SelectorLabelInfo info)
     {
@@ -964,8 +1066,11 @@ public class CriAtomExAcf
     /**
      * <summary>バス数の取得</summary>
      * <returns>バス数</returns>
-     * \par 説明:
+     * <remarks>
+     * <para header='説明'>
      * 登録されたACFに含まれるバスの数を取得します。
+     * </para>
+     * </remarks>
      */
     public static int GetNumBuses()
     {
@@ -975,8 +1080,11 @@ public class CriAtomExAcf
     /**
      * <summary>DSPバス設定内の最大バス数の取得</summary>
      * <returns>DSPバス設定内の最大バス数</returns>
-     * \par 説明:
+     * <remarks>
+     * <para header='説明'>
      * 登録されたACFに含まれるDSPバス設定内の最大バスの数を取得します。
+     * </para>
+     * </remarks>
      */
     public static int GetMaxBusesOfDspBusSettings()
     {
@@ -985,11 +1093,14 @@ public class CriAtomExAcf
 
     /**
      * <summary>ACF内のバス名取得</summary>
-     * <param name="busName">バス名</param>
+     * <param name='busName'>バス名</param>
      * <returns>ACF内バス名</returns>
-     * \par 説明:
-     * 指定されたバス名のACF内文字列を取得します。<br>
-     * 存在しないバス名を指定した場合はNULLが返ります。<br>	 
+     * <remarks>
+     * <para header='説明'>
+     * 指定されたバス名のACF内文字列を取得します。<br/>
+     * 存在しないバス名を指定した場合はNULLが返ります。<br/>
+     * </para>
+     * </remarks>
      */
     public static string FindBusName(string busName)
     {
@@ -1078,7 +1189,7 @@ public class CriAtomExAcf
     private static extern bool criAtomExAcf_GetGlobalAisacGraphInfo(IntPtr aisac_info, ushort graph_index, IntPtr graph_info);
 
     [DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
-    private static extern bool criAtomExAcf_GetGlobalAisacValue(IntPtr aisac_info, float control, AisacGraphType type, float value);
+    private static extern bool criAtomExAcf_GetGlobalAisacValue(IntPtr aisac_info, float control, AisacGraphType type, out float value);
 
     [DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
     private static extern bool criAtomExAcf_GetAcfInfo(IntPtr acf_info);
@@ -1113,44 +1224,44 @@ public class CriAtomExAcf
     [DllImport(CriWare.pluginName, CallingConvention = CriWare.pluginCallingConvention)]
     private static extern string criAtomExAcf_FindBusName(string bus_name);
 #else
-    private static int criAtomExAcf_GetNumAisacControls(){ return 0;}
-    private static bool criAtomExAcf_GetAisacControlInfo(ushort index, AisacControlInfo info){ return false;}    
-    private static uint criAtomExAcf_GetAisacControlIdByName(string name){ return 0;}    
-    private static string criAtomExAcf_GetAisacControlNameById(uint id){ return null;}    
-    private static int criAtomExAcf_GetNumDspSettings(){ return 0;}    
-    private static int criAtomExAcf_GetNumDspSettingsFromAcfData(IntPtr acf_data, int acf_data_size){ return 0;}    
-    private static string criAtomExAcf_GetDspSettingNameByIndex(ushort index){ return null;}    
-    private static string criAtomExAcf_GetDspSettingNameByIndexFromAcfData(IntPtr acf_data, int acf_data_size, ushort index){ return null;}   
-    private static bool criAtomExAcf_GetDspSettingInformation(string name, AcfDspSettingInfo info){ return false;}    
-    private static bool criAtomExAcf_GetDspSettingSnapshotInformation(ushort index, AcfDspSettingSnapshotInfo info){ return false;}    
-    private static bool criAtomExAcf_GetDspBusInformation(ushort index, AcfDspBusInfo info){ return false;}    
-    private static int criAtomExAcf_GetDspFxType(ushort index){ return 0;}    
-    private static string criAtomExAcf_GetDspFxName(ushort index){ return null;}   
-    private static bool criAtomExAcf_GetDspFxParameters(ushort index, IntPtr parameters, int size){ return false;}    
-    private static bool criAtomExAcf_GetDspBusLinkInformation(ushort index, AcfDspBusLinkInfo info){ return false;}    
-    private static int criAtomExAcf_GetNumCategoriesFromAcfData(IntPtr acf_data, int acf_data_size){ return 0;}    
-    private static int criAtomExAcf_GetNumCategories(){ return 0;}    
-    private static int criAtomExAcf_GetNumCategoriesPerPlaybackFromAcfData(IntPtr acf_data, int acf_data_size){ return 0;}    
-    private static int criAtomExAcf_GetNumCategoriesPerPlayback(){ return 0;}    
-    private static bool criAtomExAcf_GetCategoryInfo(ushort index, CategoryInfo info){ return false;}    
-    private static bool criAtomExAcf_GetCategoryInfoByName(string name, CategoryInfo info){ return false;}
-    private static bool criAtomExAcf_GetCategoryInfoById(uint id, CategoryInfo info){ return false; }    
-    private static int criAtomExAcf_GetNumGlobalAisacs(){ return 0; }    
-    private static bool criAtomExAcf_GetGlobalAisacInfo(ushort index, GlobalAisacInfo info){ return false;}    
-    private static bool criAtomExAcf_GetGlobalAisacInfoByName(string name, GlobalAisacInfo info){ return false;}    
-    private static bool criAtomExAcf_GetGlobalAisacGraphInfo(ref GlobalAisacInfo aisac_info, ushort graph_index, AisacGraphInfo graph_info){ return false;}    
-    private static bool criAtomExAcf_GetGlobalAisacValue(ref GlobalAisacInfo aisac_info, float control, AisacGraphType type, float value){ return false;}    
-    private static bool criAtomExAcf_GetAcfInfo(AcfInfo acf_info){ return false;}    
-    private static bool criAtomExAcf_GetAcfInfoFromAcfData(IntPtr acf_data, int acf_data_size, AcfInfo acf_info){ return false;}    
-    private static int criAtomExAcf_GetNumSelectors(){ return 0;}    
-    private static bool criAtomExAcf_GetSelectorInfoByIndex(ushort index, SelectorInfo info){ return false;}    
-    private static bool criAtomExAcf_GetSelectorInfoByName(string name, SelectorInfo info){ return false;}    
-    private static bool criAtomExAcf_GetSelectorLabelInfo(ref SelectorInfo selector_info, ushort label_index, SelectorLabelInfo info){ return false;}    
-    private static int criAtomExAcf_GetNumBusesFromAcfData(IntPtr acf_data, int acf_data_size){ return 0; }    
-    private static int criAtomExAcf_GetNumBuses(){ return 0; }    
-    private static int criAtomExAcf_GetMaxBusesOfDspBusSettingsFromAcfData(IntPtr acf_data, int acf_data_size){ return 0;}    
-    private static int criAtomExAcf_GetMaxBusesOfDspBusSettings(){ return 0;}    
-    private static string criAtomExAcf_FindBusName(string bus_name){ return null;}
+    private static int criAtomExAcf_GetNumAisacControls() { return 0; }
+    private static bool criAtomExAcf_GetAisacControlInfo(ushort index, IntPtr info) { return false; }
+    private static uint criAtomExAcf_GetAisacControlIdByName(string name) { return 0; }
+    private static string criAtomExAcf_GetAisacControlNameById(uint id) { return null; }
+    private static int criAtomExAcf_GetNumDspSettings() { return 0; }
+    private static int criAtomExAcf_GetNumDspSettingsFromAcfData(IntPtr acf_data, int acf_data_size) { return 0; }
+    private static string criAtomExAcf_GetDspSettingNameByIndex(ushort index) { return null; }
+    private static string criAtomExAcf_GetDspSettingNameByIndexFromAcfData(IntPtr acf_data, int acf_data_size, ushort index) { return null; }
+    private static bool criAtomExAcf_GetDspSettingInformation(string name, IntPtr info) { return false; }
+    private static bool criAtomExAcf_GetDspSettingSnapshotInformation(ushort index, IntPtr info) { return false; }
+    private static bool criAtomExAcf_GetDspBusInformation(ushort index, IntPtr info) { return false; }
+    private static int criAtomExAcf_GetDspFxType(ushort index) { return 0; }
+    private static string criAtomExAcf_GetDspFxName(ushort index) { return null; }
+    private static bool criAtomExAcf_GetDspFxParameters(ushort index, IntPtr parameters, int size) { return false; }
+    private static bool criAtomExAcf_GetDspBusLinkInformation(ushort index, IntPtr info) { return false; }
+    private static int criAtomExAcf_GetNumCategoriesFromAcfData(IntPtr acf_data, int acf_data_size) { return 0; }
+    private static int criAtomExAcf_GetNumCategories() { return 0; }
+    private static int criAtomExAcf_GetNumCategoriesPerPlaybackFromAcfData(IntPtr acf_data, int acf_data_size) { return 0; }
+    private static int criAtomExAcf_GetNumCategoriesPerPlayback() { return 0; }
+    private static bool criAtomExAcf_GetCategoryInfo(ushort index, IntPtr info) { return false; }
+    private static bool criAtomExAcf_GetCategoryInfoByName(string name, IntPtr info) { return false; }
+    private static bool criAtomExAcf_GetCategoryInfoById(uint id, IntPtr info) { return false; }
+    private static int criAtomExAcf_GetNumGlobalAisacs() { return 0; }
+    private static bool criAtomExAcf_GetGlobalAisacInfo(ushort index, IntPtr info) { return false; }
+    private static bool criAtomExAcf_GetGlobalAisacInfoByName(string name, IntPtr info) { return false; }
+    private static bool criAtomExAcf_GetGlobalAisacGraphInfo(IntPtr aisac_info, ushort graph_index, IntPtr graph_info) { return false; }
+    private static bool criAtomExAcf_GetGlobalAisacValue(IntPtr aisac_info, float control, AisacGraphType type, out float value) { value = 0.0f; return false; }
+    private static bool criAtomExAcf_GetAcfInfo(IntPtr acf_info) { return false; }
+    private static bool criAtomExAcf_GetAcfInfoFromAcfData(IntPtr acf_data, int acf_data_size, IntPtr acf_info) { return false; }
+    private static int criAtomExAcf_GetNumSelectors() { return 0; }
+    private static bool criAtomExAcf_GetSelectorInfoByIndex(ushort index, IntPtr info) { return false; }
+    private static bool criAtomExAcf_GetSelectorInfoByName(string name, IntPtr info) { return false; }
+    private static bool criAtomExAcf_GetSelectorLabelInfo(IntPtr selector_info, ushort label_index, IntPtr info) { return false; }
+    private static int criAtomExAcf_GetNumBusesFromAcfData(IntPtr acf_data, int acf_data_size) { return 0; }
+    private static int criAtomExAcf_GetNumBuses() { return 0; }
+    private static int criAtomExAcf_GetMaxBusesOfDspBusSettingsFromAcfData(IntPtr acf_data, int acf_data_size) { return 0; }
+    private static int criAtomExAcf_GetMaxBusesOfDspBusSettings() { return 0; }
+    private static string criAtomExAcf_FindBusName(string bus_name) { return null; }
 #endif
     #endregion
 }

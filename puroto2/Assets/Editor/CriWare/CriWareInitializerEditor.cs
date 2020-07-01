@@ -88,6 +88,10 @@ public class CriWareInitializerEditor : Editor
 	
 	static private string[] asrOutputModes = {"Default", "Stereo", "4ch", "6ch(5.1ch)", "8ch(7.1ch)"};
 	static private int[] asrNumOutputChannels = {0, 2, 4, 6, 8};
+	static private string[] inGamePreviewSwitchModes = { "Disable", "Enable", "Follow Build Setting" };
+	static private CriAtomConfig.InGamePreviewSwitchMode[] inGamePreviewSwitchModeValues
+		= { CriAtomConfig.InGamePreviewSwitchMode.Disable, CriAtomConfig.InGamePreviewSwitchMode.Enable, CriAtomConfig.InGamePreviewSwitchMode.FollowBuildSetting };
+
 
 	public override void OnInspectorGUI()
 	{
@@ -162,10 +166,26 @@ public class CriWareInitializerEditor : Editor
 				selected_output_mode = EditorGUILayout.Popup("ASR Output Mode", selected_output_mode, asrOutputModes);
 				initializer.atomConfig.asrOutputChannels = asrNumOutputChannels[selected_output_mode];
 
-				GenToggleField("Uses Time For Seed",    "", ref initializer.atomConfig.useRandomSeedWithTime);
-                GenToggleField("Uses In Game Preview", "", ref initializer.atomConfig.usesInGamePreview);
-                GenToggleField("VR Mode", "", ref initializer.atomConfig.vrMode);
+				GenToggleField("Use Time For Seed",    "", ref initializer.atomConfig.useRandomSeedWithTime);
 
+				if (initializer.atomConfig.inGamePreviewMode == CriAtomConfig.InGamePreviewSwitchMode.Default) {
+					initializer.atomConfig.inGamePreviewMode = initializer.atomConfig.usesInGamePreview ?
+																CriAtomConfig.InGamePreviewSwitchMode.Enable :
+																CriAtomConfig.InGamePreviewSwitchMode.Disable;
+					initializer.atomConfig.usesInGamePreview = false;
+				}
+				int selected_ingamepreview_switch_mode = 0;
+				foreach (CriAtomConfig.InGamePreviewSwitchMode mode in inGamePreviewSwitchModeValues) {
+					if (mode == initializer.atomConfig.inGamePreviewMode) {
+						break;
+					}
+					selected_ingamepreview_switch_mode++;
+				}
+				selected_ingamepreview_switch_mode = EditorGUILayout.Popup("In Game Preview", selected_ingamepreview_switch_mode, inGamePreviewSwitchModes);
+				initializer.atomConfig.inGamePreviewMode = inGamePreviewSwitchModeValues[selected_ingamepreview_switch_mode];
+
+				GenToggleField("VR Mode", "", ref initializer.atomConfig.vrMode);
+				GenToggleField("Keep Playing Sound On Pause", "", ref initializer.atomConfig.keepPlayingSoundOnPause);
 
 				showAtomStandardVoicePoolConfig = EditorGUILayout.Foldout(showAtomStandardVoicePoolConfig, "Standard Voice Pool Config");
 				if (showAtomStandardVoicePoolConfig) {
@@ -221,6 +241,7 @@ public class CriWareInitializerEditor : Editor
 					}
 					GenToggleField("Uses Android Fast Mixer", "", ref initializer.atomConfig.androidUsesAndroidFastMixer);
 					GenToggleField("Use Asr For Default Playback", "", ref initializer.atomConfig.androidForceToUseAsrForDefaultPlayback);
+					GenToggleField("[Beta] Use AAudio", "", ref initializer.atomConfig.androidUsesAAudio);
 					EditorGUI.indentLevel -= 1;
 				}
 			}
