@@ -40,7 +40,7 @@ public class stage : MonoBehaviour
     public void StageSelect()
     {
         transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
-        SceneManager.LoadScene(scene);
         GameManager.instance.sceneRestart = scene;
+        SceneManager.LoadScene(scene);
     }
 }

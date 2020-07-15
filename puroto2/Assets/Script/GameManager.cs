@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public int stageNum=0;
     public int continueNum=0;
     public int coinNum = 0;
+    public float timerNum = 0.0f;
 
     public string sceneRestart;
 

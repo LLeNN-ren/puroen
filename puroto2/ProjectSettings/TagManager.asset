@@ -13,6 +13,9 @@ TagManager:
   - glass
   - wall
   - stage
+  - restart
+  - home
+  - backscene
   layers:
   - Default
   - TransparentFX

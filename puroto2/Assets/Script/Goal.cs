@@ -5,11 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class Goal : MonoBehaviour
 {
-   // private int clear=0;
+    private timer Timer;
     // Start is called before the first frame update
     void Start()
     {
-        
+        Timer = GameObject.Find("timer").GetComponent<timer>();
     }
 
     // Update is called once per frame
@@ -25,6 +25,8 @@ public class Goal : MonoBehaviour
             GameManager.instance.stageNum += 1;
             SceneManager.LoadScene("clearScene");
             Destroy(gameObject);
+            GameManager.instance.timerNum = Timer.countTime;
+            Timer.time = false;
         }
     }
 }
