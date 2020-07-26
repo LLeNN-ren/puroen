@@ -31,7 +31,7 @@ public class kageyuka : MonoBehaviour
         if (coll.gameObject.tag == "Shadow")
         {
             box.isTrigger = false;
-            isDown = true;
+            //isDown = true;
         }
     }
 
@@ -39,12 +39,12 @@ public class kageyuka : MonoBehaviour
     {
         if (coll.gameObject.tag == "Player")
         {
-            box.isTrigger = false;
+            box.isTrigger = true;
         }
         if (coll.gameObject.tag == "Shadow")
         {
-            box.isTrigger = true;
-            isDown = true;
+            box.isTrigger = false;
+            //isDown = true;
         }
     }
 

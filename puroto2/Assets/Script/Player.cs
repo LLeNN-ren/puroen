@@ -7,10 +7,14 @@ public class Player : MonoBehaviour
     Rigidbody rd;
 
     public float moveSpeed;
+    public float shadowkasoku;//7/20追加影エリア内に速さ変更の数値
+    public float mem;
     public float jumpForce;
     public int count;
     //public float maxSpeed;
     public float shadowMode=1;
+
+    public bool tito = true;
 
     //public Vector3 rbVelo;
 
@@ -41,6 +45,7 @@ public class Player : MonoBehaviour
     {
         rd = GetComponent<Rigidbody>();
         stage = stageManager.GetComponent<StageManager>();
+        mem = moveSpeed;
         
     }
 
@@ -92,11 +97,10 @@ public class Player : MonoBehaviour
                 shadow.SetActive(false);
                 playerMode = true;
                 shadowOutSound.Play();
-
             }
         }
 
-        if(playerMode==false&&shadowMode>0)
+        /*if(playerMode==false&&shadowMode>0)
         {
             shadowMode -= 0.2f * Time.deltaTime;
             stage.ShadowGaugeDown();
@@ -105,9 +109,9 @@ public class Player : MonoBehaviour
         {
             shadowMode += 0.1f * Time.deltaTime;
             stage.ShadowGaugeUp();
-        }
+        }*/
 
-        if(player_rotation==true)
+        if (player_rotation==true)
         {
             rd.velocity = new Vector3(-moveSpeed, rd.velocity.y, 0);
         }
@@ -165,6 +169,7 @@ public class Player : MonoBehaviour
             //landingSound.Play();
         }
     }
+
 private void OnCollisionExit(Collision coll)
     {
         if(coll.gameObject.tag=="ground"||coll.gameObject.tag=="kage")
@@ -199,8 +204,34 @@ private void OnCollisionExit(Collision coll)
             isDown = true;
         }
 
-       
+
+
     }
+
+    //ここなおしました7/20↓byぱる
+    private void OnTriggerStay(Collider other)
+    {
+            if (other.gameObject.tag == "room")
+            {
+               if (playerMode == false)
+               {
+                   moveSpeed = shadowkasoku;
+                   Debug.Log(other.name + "Stay");
+               }
+               else if(playerMode == true)
+               {
+                   moveSpeed = mem;
+               }
+            }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "room")
+        {
+            moveSpeed = mem;
+        }
+    }
+    //ここなおしました7/20↑
 
     public IEnumerator ContinuePlayer()
     {
