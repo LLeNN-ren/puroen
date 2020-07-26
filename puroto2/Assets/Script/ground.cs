@@ -24,7 +24,7 @@ public class ground : MonoBehaviour
         }
         if (coll.gameObject.tag == "Shadow")
         {
-            box.isTrigger = true;
+            box.isTrigger = false;
         }
     }
 
@@ -36,7 +36,7 @@ public class ground : MonoBehaviour
         }
         if (coll.gameObject.tag == "Shadow")
         {
-            box.isTrigger = true;
+            box.isTrigger = false;
         }
     }
 
@@ -48,7 +48,7 @@ public class ground : MonoBehaviour
         }
         if (coll.gameObject.tag == "Shadow")
         {
-            box.isTrigger = true;
+            box.isTrigger = false;
         }
     }
 }

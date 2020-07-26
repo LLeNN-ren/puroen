@@ -29,8 +29,8 @@ public class StageSelectDirector : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        clear = GameManager.instance.stageNum;
-        coin = GameManager.instance.coinNum;
+        //clear = GameManager.instance.stageNum;
+        //coin = GameManager.instance.coinNum;
         //stageSelectLog = stageSelect;
 
         ray = new Ray();

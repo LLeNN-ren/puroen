@@ -16,6 +16,8 @@ TagManager:
   - restart
   - home
   - backscene
+  - room
+  - scene
   layers:
   - Default
   - TransparentFX

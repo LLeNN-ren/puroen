@@ -21,7 +21,7 @@ public class TitlePlayer : MonoBehaviour
     public GameObject normal;
     public GameObject shadow;
 
-   
+    public bool scene=false; 
 
     
     // Start is called before the first frame update
@@ -74,6 +74,11 @@ public class TitlePlayer : MonoBehaviour
         {
             player_rotation = false;
             gameObject.transform.Rotate(0.0f, 180.0f, 0.0f);
+        }
+
+        if(coll.gameObject.tag=="scene")
+        {
+            scene = true;
         }
        
     }
