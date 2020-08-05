@@ -19,7 +19,7 @@ public class StageSelectDirector : MonoBehaviour
     private Vector3 positon;
     private Vector3 screenToWorldPointPosition;
     
-    public GameObject pointer;
+    //public GameObject pointer;
     // Start is called before the first frame update
     void Start()
     {
@@ -55,10 +55,10 @@ public class StageSelectDirector : MonoBehaviour
         
 
 
-        positon = Input.mousePosition;
-        positon.z = 10.0f;
-        screenToWorldPointPosition = Camera.main.ScreenToWorldPoint(positon);
-        pointer.transform.position = new Vector3(screenToWorldPointPosition.x, -10.0f, screenToWorldPointPosition.z);
+        //positon = Input.mousePosition;
+        //positon.z = 10.0f;
+        //screenToWorldPointPosition = Camera.main.ScreenToWorldPoint(positon);
+        //pointer.transform.position = new Vector3(screenToWorldPointPosition.x, -10.0f, screenToWorldPointPosition.z);
 
        
 

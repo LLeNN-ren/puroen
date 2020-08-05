@@ -8,7 +8,7 @@ public class kageyuka : MonoBehaviour
     BoxCollider box;
     private bool isDown=false;
     // Start is called before the first frame update
-    GameObject player = GameObject.Find("Player");
+    //GameObject player = GameObject.Find("Player");
     void Start()
     {
         box = GetComponent<BoxCollider>();

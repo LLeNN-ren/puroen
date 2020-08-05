@@ -7,6 +7,8 @@ public class stage : MonoBehaviour
 {
     public string scene;
     public bool pickUp = false;
+    public GameObject pointer;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,10 +22,13 @@ public class stage : MonoBehaviour
         {
             pickUp = false;
             transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+            pointer.transform.position = new Vector3(gameObject.transform.position.x,-10.0f,0.0f);
         }
        else
         {
             transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+
+
         }
     }
 

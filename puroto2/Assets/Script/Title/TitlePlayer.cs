@@ -21,9 +21,9 @@ public class TitlePlayer : MonoBehaviour
     public GameObject normal;
     public GameObject shadow;
 
-    public bool scene=false; 
+    public bool scene=false;
 
-    
+    public Fade fade;
     // Start is called before the first frame update
     void Start()
     {
@@ -79,6 +79,7 @@ public class TitlePlayer : MonoBehaviour
         if(coll.gameObject.tag=="scene")
         {
             scene = true;
+            fade.StartFadeOut();
         }
        
     }

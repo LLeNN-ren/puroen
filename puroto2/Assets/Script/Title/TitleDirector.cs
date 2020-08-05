@@ -7,10 +7,14 @@ public class TitleDirector : MonoBehaviour
 {
     public GameObject kabe;
     public TitlePlayer player;
+    public Fade fade;
+
+   
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.Find("Player").GetComponent<TitlePlayer>();
+        //fade = GameObject.Find("Fade").GetComponent<Fade>();
     }
 
     // Update is called once per frame
@@ -21,10 +25,12 @@ public class TitleDirector : MonoBehaviour
             kabe.SetActive(false);
             
         }
-        if (player.scene == true)
+        
+        if (fade.IsFadeOutComplete())
         {
             SceneManager.LoadScene("StageSelect");
         }
-
     }
+
+   
 }
