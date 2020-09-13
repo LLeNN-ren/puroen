@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class Goal : MonoBehaviour
 {
     private timer Timer;
+    public CriAtomSource GoalSound;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,6 +23,7 @@ public class Goal : MonoBehaviour
     {
         if(coll.gameObject.tag=="Player"|| coll.gameObject.tag == "Shadow")
         {
+            GoalSound.Play();
             GameManager.instance.stageNum += 1;
             SceneManager.LoadScene("clearScene");
             Destroy(gameObject);

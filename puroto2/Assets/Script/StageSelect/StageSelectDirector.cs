@@ -19,7 +19,7 @@ public class StageSelectDirector : MonoBehaviour
     private Vector3 positon;
     private Vector3 screenToWorldPointPosition;
     
-    //public GameObject pointer;
+    public GameObject pointer;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,8 +29,8 @@ public class StageSelectDirector : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //clear = GameManager.instance.stageNum;
-        //coin = GameManager.instance.coinNum;
+        clear = GameManager.instance.stageNum;
+        coin = GameManager.instance.coinNum;
         //stageSelectLog = stageSelect;
 
         ray = new Ray();
@@ -55,10 +55,10 @@ public class StageSelectDirector : MonoBehaviour
         
 
 
-        //positon = Input.mousePosition;
-        //positon.z = 10.0f;
-        //screenToWorldPointPosition = Camera.main.ScreenToWorldPoint(positon);
-        //pointer.transform.position = new Vector3(screenToWorldPointPosition.x, -10.0f, screenToWorldPointPosition.z);
+        positon = Input.mousePosition;
+        positon.z = 10.0f;
+        screenToWorldPointPosition = Camera.main.ScreenToWorldPoint(positon);
+        pointer.transform.position = new Vector3(screenToWorldPointPosition.x, -10.0f, screenToWorldPointPosition.z + 10.0f);
 
        
 

@@ -37,8 +37,8 @@ public class teleport : MonoBehaviour
             Ppos.y = TApos.y + 2.0f;
 
             Player.gameObject.tag = "Player";
-            player.normal.SetActive(true);
-            player.shadow.SetActive(false);
+            //player.normal.SetActive(true);
+            //player.shadow.SetActive(false);
             player.playerMode = true;
 
             Ptransform.position = Ppos;
@@ -61,8 +61,8 @@ public class teleport : MonoBehaviour
             Ppos.y = TApos.y + 2.0f;
 
             Player.gameObject.tag = "Player";
-            player.normal.SetActive(true);
-            player.shadow.SetActive(false);
+            //player.normal.SetActive(true);
+            //player.shadow.SetActive(false);
             player.playerMode = true;
 
             Ptransform.position = Ppos;

@@ -25,7 +25,9 @@ public class backgame : MonoBehaviour
     }
     public void OnClick()
     {
-        player.moveSpeed = playmenu.Keep;
+        player.moveSpeed = playmenu.Keep_move;
+        player.shadowkasoku = playmenu.Keep_Skasoku;
+        player.mem = playmenu.Keep_mem;
         Timer.time = true;
         playmenu.kidou = false;
 

@@ -10,7 +10,9 @@ public class PlayMenu : MonoBehaviour
     public GameObject BackTitle;
     public GameObject BackGame;
 
-    public float Keep;
+    public float Keep_move;
+    public float Keep_Skasoku;
+    public float Keep_mem;
     public bool kidou;
 
     // Start is called before the first frame update
@@ -33,8 +35,12 @@ public class PlayMenu : MonoBehaviour
     {
         if (kidou == false)
         {
-            Keep = player.moveSpeed;
+            Keep_move = player.moveSpeed;
+            Keep_Skasoku = player.shadowkasoku;
+            Keep_mem = player.mem;
             player.moveSpeed = 0;
+            player.shadowkasoku = 0;
+            player.mem = 0;
             Timer.time = false;
 
             BackTitle.SetActive(true);

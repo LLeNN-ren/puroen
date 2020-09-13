@@ -1,17 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Media;
 using UnityEngine;
 
 public class kageyuka : MonoBehaviour
 {
     BoxCollider box;
     private bool isDown=false;
+
     // Start is called before the first frame update
-    //GameObject player = GameObject.Find("Player");
+    GameObject player;
     void Start()
     {
         box = GetComponent<BoxCollider>();
+        player = GameObject.Find("Player");
     }
 
     // Update is called once per frame
@@ -49,6 +50,32 @@ public class kageyuka : MonoBehaviour
             isDown = true;
         }
     }
-    
-    
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            box.isTrigger = false;
+        }
+        if (other.gameObject.tag == "Shadow")
+        {
+            box.isTrigger = true;
+            isDown = true;
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            box.isTrigger = false;
+        }
+        if (other.gameObject.tag == "Shadow")
+        {
+            box.isTrigger = true;
+            isDown = true;
+        }
+    }
+
+
 }

@@ -23,8 +23,8 @@ public class Player : MonoBehaviour
     public bool isDown = false;
     public bool player_rotation = false;
 
-    public GameObject normal;
-    public GameObject shadow;
+    //public GameObject normal;
+    //public GameObject shadow;
 
     public GameObject kage;
 
@@ -40,6 +40,8 @@ public class Player : MonoBehaviour
     public CriAtomSource shadowOutSound;
     public CriAtomSource soulGetSound;
     public CriAtomSource landingSound;
+    public CriAtomSource wallTouchSound;
+    public CriAtomSource stepSound;
     // Start is called before the first frame update
     void Start()
     {
@@ -71,7 +73,7 @@ public class Player : MonoBehaviour
             rd.AddForce(transform.up * jumpForce, ForceMode.Impulse);
             count++;
             jumpSound.Play();
-
+            stepSound.Stop();
         }
 
         if(this.gameObject.transform.position.y<-16)
@@ -84,8 +86,8 @@ public class Player : MonoBehaviour
             if(playerMode==true&&shadowMode>0)
             {
                 gameObject.tag = "Shadow";
-                normal.SetActive(false);
-                shadow.SetActive(true);
+                //normal.SetActive(false);
+                //shadow.SetActive(true);
                 playerMode = false;
                 shadowInSound.Play();
 
@@ -93,8 +95,8 @@ public class Player : MonoBehaviour
             else
             {
                 gameObject.tag = "Player";
-                normal.SetActive(true);
-                shadow.SetActive(false);
+                //normal.SetActive(true);
+                //shadow.SetActive(false);
                 playerMode = true;
                 shadowOutSound.Play();
             }
@@ -128,6 +130,7 @@ public class Player : MonoBehaviour
         {
             //isJump = false;
             landingSound.Play();
+            stepSound.Play();
         }
         if (coll.gameObject.tag == "glass" && player_rotation == false)
         {
@@ -151,14 +154,14 @@ public class Player : MonoBehaviour
         }*/
         //死亡判定こいつらじゃ無理だった↓
         //GameManegerをタイトルシーンからゲームシーンにコピペしました。タイトルシーンから開始するなら動く↓ので消した方がいい。作ってるときだけはあるとゲームシーンからすぐ始められて便利そうなだけ。
-        if (coll.gameObject.tag == "wall")
+        /*if (coll.gameObject.tag == "wall")
         {
             isDown = true;
         }
         else if (coll.gameObject.tag == "wall")
         {
             isDown = true;
-        }
+        }*/
     }
 
     private void OnCollisionStay(Collision coll)
@@ -240,7 +243,7 @@ private void OnCollisionExit(Collision coll)
         //gameObject.transform.position = new Vector3(gameObject.transform.position.x, 5.0f, 0.0f);
         moveSpeed = 0;
         yield return new WaitForSeconds(0.45f);
-        moveSpeed = 7;
+        moveSpeed = 20;
         yield break;
     }
     
